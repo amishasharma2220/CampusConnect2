@@ -6,10 +6,7 @@ bcrypt==5.0.0
 cffi==2.0.0
 click==8.4.2
 cryptography==49.0.0
-dkimpy==1.1.8
-dnspython==2.8.0
 ecdsa==0.19.2
-emails==1.1.2
 fastapi==0.139.0
 h11==0.16.0
 idna==3.18
@@ -17,13 +14,11 @@ Mako==1.3.12
 MarkupSafe==3.0.3
 passlib==1.7.4
 psycopg2-binary==2.9.12
-puremagic==2.2.0
 pyasn1==0.6.3
 pycparser==3.0
 pydantic==2.13.4
 pydantic-settings==2.14.2
 pydantic_core==2.46.4
-python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
 python-jose==3.5.0
 python-multipart==0.0.32
