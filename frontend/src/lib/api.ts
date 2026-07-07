@@ -129,7 +129,7 @@ export const authApi = {
 export const eventsApi = {
   getAll: (params?: { category?: string; status?: string }) => {
     const qs = params
-      ? "?" + new URLSearchParams(Object.entries(params).filter(([, v]) => v)).join("&")
+      ? "?" + new URLSearchParams(Object.entries(params).filter(([, v]) => v != null && v !== "") as [string, string][]).toString()
       : "";
     return request<Event[]>(`/events/${qs}`, {}, true);
   },
@@ -166,7 +166,7 @@ export const eventsApi = {
 export const clubsApi = {
   getAll: (params?: { faculty?: string; department?: string; category?: string }) => {
     const qs = params
-      ? "?" + new URLSearchParams(Object.entries(params).filter(([, v]) => v)).join("&")
+      ? "?" + new URLSearchParams(Object.entries(params).filter(([, v]) => v != null && v !== "") as [string, string][]).toString()
       : "";
     return request<Club[]>(`/clubs/${qs}`);
   },

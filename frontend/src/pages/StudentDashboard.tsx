@@ -61,7 +61,7 @@ const StudentDashboard = () => {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatsCard title="Events Registered" value={registered.length} icon={<Calendar className="w-5 h-5" />} />
-         <StatsCard title="Total Events" value={events.length} icon={<Search className="w-5 h-5" />} description="Available on campus" />
+<StatsCard title="Total Events" value={events.length} icon={<Search className="w-5 h-5" />} description="Available on campus" />
           <StatsCard title="Branch" value={user?.branch || "—"} icon={<UserCircle className="w-5 h-5" />} />
           <StatsCard title="Year" value={user?.year_of_study || "—"} icon={<CalendarCheck className="w-5 h-5" />} />
         </div>

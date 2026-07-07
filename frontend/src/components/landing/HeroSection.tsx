@@ -1,8 +1,8 @@
+import heroCampus from "@/assets/hero-campus.jpg";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar, Users, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroCampus from "@/assets/hero-campus.jpg";
 
 const HeroSection = () => {
   return (
