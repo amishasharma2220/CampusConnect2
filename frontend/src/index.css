@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 30% 97%;
+    --foreground: 220 30% 12%;
+    --card: 40 25% 95%;
+    --card-foreground: 220 30% 12%;
+    --popover: 40 30% 97%;
+    --popover-foreground: 220 30% 12%;
+    --primary: 28 90% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 25% 18%;
+    --secondary-foreground: 40 30% 97%;
+    --muted: 35 20% 92%;
+    --muted-foreground: 220 15% 45%;
+    --accent: 16 85% 58%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 35 20% 88%;
+    --input: 35 20% 88%;
+    --ring: 28 90% 52%;
+    --radius: 0.75rem;
+    --hero-gradient: linear-gradient(135deg, hsl(28 90% 52%), hsl(16 85% 58%));
+    --shadow-warm: 0 20px 60px -15px hsl(28 90% 52% / 0.25);
+    --shadow-card: 0 4px 24px -4px hsl(220 30% 12% / 0.08);
+    --glow-primary: 0 0 40px hsl(28 90% 52% / 0.3);
+  }
+
+  .dark {
+    --background: 220 30% 8%;
+    --foreground: 40 20% 95%;
+    --card: 220 28% 12%;
+    --card-foreground: 40 20% 95%;
+    --primary: 28 90% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 35 15% 85%;
+    --secondary-foreground: 220 30% 8%;
+    --muted: 220 25% 15%;
+    --muted-foreground: 220 15% 60%;
+    --accent: 16 85% 58%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 25% 18%;
+    --input: 220 25% 18%;
+    --ring: 28 90% 55%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body { @apply bg-background text-foreground font-sans antialiased; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--hero-gradient);
+  }
+  .bg-hero-gradient { background-image: var(--hero-gradient); }
+  .shadow-warm { box-shadow: var(--shadow-warm); }
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .glow-primary { box-shadow: var(--glow-primary); }
+  .glass {
+    background: hsl(var(--glass-bg, 40 30% 97% / 0.8));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
