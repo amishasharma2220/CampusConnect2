@@ -36,12 +36,22 @@ def create_user(db: Session, data: RegisterRequest) -> User:
         is_active=True,
     )
     db.add(user)
-    db.flush()
+    db.commit()
+    db.refresh(user)
+
+    # Check if reg number already exists — if so, skip it
+    reg_number = data.registration_number or None
+    if reg_number:
+        existing_profile = db.query(Profile).filter(
+            Profile.registration_number == reg_number
+        ).first()
+        if existing_profile:
+            reg_number = None
 
     profile = Profile(
         user_id=user.id,
         full_name=data.full_name,
-        registration_number=data.registration_number,
+        registration_number=reg_number,
         branch=data.branch,
         year_of_study=data.year_of_study,
     )
@@ -113,7 +123,7 @@ def refresh_access_token(db: Session, refresh_token: str) -> dict:
         UserSession.refresh_token_hash == token_hash
     ).first()
 
-    if not session or session.expires_at < datetime.utcnow():
+    if not session or session.expires_at.replace(tzinfo=None) < datetime.utcnow():
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Session expired. Please log in again."
