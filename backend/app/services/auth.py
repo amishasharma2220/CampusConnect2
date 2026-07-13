@@ -3,7 +3,6 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 import hashlib
-import secrets
 
 from app.models.user import User, Session as UserSession
 from app.models.profile import Profile
@@ -21,12 +20,8 @@ def get_user_by_id(db: Session, user_id: str) -> Optional[User]:
 
 
 def create_user(db: Session, data: RegisterRequest) -> User:
-    existing = get_user_by_email(db, data.email)
-    if existing:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="An account with this email already exists."
-        )
+    if get_user_by_email(db, data.email):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="An account with this email already exists.")
 
     user = User(
         email=data.email.lower(),
@@ -39,45 +34,24 @@ def create_user(db: Session, data: RegisterRequest) -> User:
     db.commit()
     db.refresh(user)
 
-    # Check if reg number already exists — if so, skip it
-    reg_number = data.registration_number or None
-    if reg_number:
-        existing_profile = db.query(Profile).filter(
-            Profile.registration_number == reg_number
-        ).first()
-        if existing_profile:
-            reg_number = None
-
     profile = Profile(
         user_id=user.id,
         full_name=data.full_name,
-        registration_number=reg_number,
+        registration_number=data.registration_number or None,
         branch=data.branch,
         year_of_study=data.year_of_study,
     )
     db.add(profile)
     db.commit()
-    db.refresh(user)
     return user
 
 
 def authenticate_user(db: Session, data: LoginRequest) -> User:
     user = get_user_by_email(db, data.email)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password."
-        )
-    if not verify_password(data.password, user.password_hash):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password."
-        )
+    if not user or not verify_password(data.password, user.password_hash):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password.")
     if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Account is disabled."
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is disabled.")
     user.last_login_at = datetime.utcnow()
     db.commit()
     return user
@@ -86,9 +60,9 @@ def authenticate_user(db: Session, data: LoginRequest) -> User:
 def create_tokens(db: Session, user: User) -> dict:
     access_token = create_access_token(subject=str(user.id))
     refresh_token = create_refresh_token(subject=str(user.id))
-
-    # Store hashed refresh token in DB
     token_hash = hashlib.sha256(refresh_token.encode()).hexdigest()
+
+    db.query(UserSession).filter(UserSession.user_id == user.id).delete()
     session = UserSession(
         user_id=user.id,
         refresh_token_hash=token_hash,
@@ -98,51 +72,44 @@ def create_tokens(db: Session, user: User) -> dict:
     db.commit()
 
     profile = db.query(Profile).filter(Profile.user_id == user.id).first()
-    full_name = profile.full_name if profile else ""
-
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer",
         "role": user.role.value,
         "user_id": str(user.id),
-        "full_name": full_name,
+        "full_name": profile.full_name if profile else "",
     }
 
 
 def refresh_access_token(db: Session, refresh_token: str) -> dict:
     payload = decode_token(refresh_token)
     if not payload or payload.get("type") != "refresh":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired refresh token."
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired refresh token.")
 
     token_hash = hashlib.sha256(refresh_token.encode()).hexdigest()
-    session = db.query(UserSession).filter(
-        UserSession.refresh_token_hash == token_hash
-    ).first()
+    session = db.query(UserSession).filter(UserSession.refresh_token_hash == token_hash).first()
+    if not session:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Session not found. Please log in again.")
 
-    if not session or session.expires_at.replace(tzinfo=None) < datetime.utcnow():
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Session expired. Please log in again."
-        )
+    expires = session.expires_at
+    if expires.tzinfo is not None:
+        expires = expires.replace(tzinfo=None)
+    if expires < datetime.utcnow():
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Session expired. Please log in again.")
 
     user = get_user_by_id(db, payload["sub"])
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
 
-    # Rotate refresh token
     db.delete(session)
+    db.commit()
     return create_tokens(db, user)
 
 
 def logout_user(db: Session, refresh_token: str):
     token_hash = hashlib.sha256(refresh_token.encode()).hexdigest()
-    session = db.query(UserSession).filter(
-        UserSession.refresh_token_hash == token_hash
-    ).first()
+    session = db.query(UserSession).filter(UserSession.refresh_token_hash == token_hash).first()
     if session:
         db.delete(session)
         db.commit()

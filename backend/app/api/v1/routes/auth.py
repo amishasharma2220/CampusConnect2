@@ -1,6 +1,7 @@
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Header
 from sqlalchemy.orm import Session
+
 from app.db.session import get_db
 from app.schemas.user import RegisterRequest, LoginRequest, TokenResponse, RefreshRequest
 from app.services import auth as auth_service
@@ -35,7 +36,7 @@ def logout(data: RefreshRequest, db: Session = Depends(get_db)):
 @router.get("/me")
 def get_me(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None)
+    authorization: Optional[str] = Header(None),
 ):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Not authenticated.")
