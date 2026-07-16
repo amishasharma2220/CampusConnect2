@@ -23,8 +23,8 @@ interface RegisterData {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  login: async () => { throw new Error("Not ready"); },
-  register: async () => { throw new Error("Not ready"); },
+  login: async () => { throw new Error("Auth not ready"); },
+  register: async () => { throw new Error("Auth not ready"); },
   logout: () => {},
   isAuthenticated: false,
 });

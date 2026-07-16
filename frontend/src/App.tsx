@@ -84,6 +84,7 @@ const App = () => (
           <Route path="/club/budget" element={<ClubBudget />} />
           <Route path="/club/create-event" element={<CreateEvent />} />
           <Route path="/club/manage-events" element={<ManageEvents />} />
+          <Route path="/university-admin" element={<AdminDashboard />} />
 
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
