@@ -65,7 +65,7 @@ const App = () => (
           <Route path="/event-register/:id" element={<EventRegister />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/university-admin" element={<UniversityAdmin />} />
+          <Route path="/university-admin" element={<AdminDashboard />} />
 
           {/* Student Module */}
           <Route path="/student/dashboard" element={<StudentDashboard />} />
