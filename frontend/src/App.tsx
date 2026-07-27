@@ -37,6 +37,7 @@ import Leaderboard from "./pages/Leaderboard";
 import EventRegister from "./pages/EventRegister";
 import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
+import { Navigate } from "react-router-dom";
 
 
 const App = () => (
@@ -58,8 +59,9 @@ const App = () => (
           <Route path="/event-guidelines" element={<EventGuidelines />} />
           <Route path="/club-registration" element={<ClubRegistration />} />
           <Route path="/join-club" element={<JoinClub />} />
-          <Route path="/explore-events" element={<ExploreEvents />} />
-          <Route path="/host-event" element={<HostEvent />} />
+          <Route path="/explore-events" element={<Navigate to="/events" replace />} />
+          <Route path="/join" element={<Navigate to="/register" replace />} />
+          <Route path="/host-event" element={<Navigate to="/login" replace />} />
           <Route path="/venues" element={<VenueFinder />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/event-register/:id" element={<EventRegister />} />
