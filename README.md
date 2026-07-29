@@ -30,21 +30,18 @@ CampusConnect is a full-stack university platform built for Manipal University J
 | CI/CD | GitHub Actions |
 
 ## Project Structure
+
+```
 CampusConnect/
-
 ├── frontend/          # React + Vite frontend
-
 ├── backend/           # FastAPI backend
-
 ├── database/          # SQL migrations and seeds
-
 ├── docs/              # Architecture, API, and DB documentation
-
 ├── design/            # Wireframes and design assets
-
 ├── scripts/           # Dev and deployment scripts
-
 └── .github/           # GitHub Actions workflows
+```
+
 ## Getting Started
 
 Documentation coming soon.
