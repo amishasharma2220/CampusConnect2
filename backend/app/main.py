@@ -13,12 +13,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5174",
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -26,16 +21,9 @@ app.add_middleware(
 
 app.include_router(router)
 
-
 @app.get("/")
 def root():
-    return {
-        "app": settings.APP_NAME,
-        "version": settings.APP_VERSION,
-        "status": "running",
-        "docs": "/api/docs",
-    }
-
+    return {"app": settings.APP_NAME, "version": settings.APP_VERSION, "status": "running", "docs": "/api/docs"}
 
 @app.get("/health")
 def health():
