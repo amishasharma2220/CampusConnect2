@@ -77,7 +77,7 @@ const VenueFinder = () => {
     if (window.google?.maps) { setMapReady(true); return; }
     window.initMUJMap = () => setMapReady(true);
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&loading=async&callback=initMUJMap`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_KEY}&loading=async&callback=initMUJMap`;
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
