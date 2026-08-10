@@ -318,3 +318,65 @@ export interface RegisterEventPayload {
   year_of_study?: string;
   branch?: string;
 }
+
+// ── Club Admin API ────────────────────────────────────────────────────────
+export const clubAdminApi = {
+  getMyClub: () => request<ClubAdminProfile>("/club-admin/my-club", {}, true),
+  getStats: () => request<ClubStats>("/club-admin/stats", {}, true),
+  getEvents: () => request<ClubAdminEvent[]>("/club-admin/events", {}, true),
+  getCompletedEvents: () => request<CompletedEvent[]>("/club-admin/completed-events", {}, true),
+  getMembers: () => request<ClubAdminMember[]>("/club-admin/members", {}, true),
+  getBudget: () => request<BudgetData>("/club-admin/budget", {}, true),
+  addBudgetEntry: (data: BudgetEntryPayload) => request<{ message: string }>("/club-admin/budget", { method: "POST", body: JSON.stringify(data) }, true),
+  getAttendance: () => request<AttendanceData[]>("/club-admin/attendance", {}, true),
+};
+
+export interface ClubAdminProfile {
+  id: string; slug: string; name: string; short_name: string | null;
+  description: string | null; faculty: string; department: string;
+  category: string; members_count: number; fee: number;
+  faculty_advisor: string | null; founded_year: number | null;
+  logo_url: string | null; admin_name: string; admin_email: string; admin_reg_no: string | null;
+}
+
+export interface ClubStats {
+  total_events: number; completed_events: number; approved_events: number;
+  pending_approval: number; total_registrations: number;
+  member_registrations: number; event_registrations: number;
+  club_members: number; certificates_issued: number; certificates_pending: number;
+}
+
+export interface ClubAdminEvent {
+  id: string; slug: string; title: string; display_date: string | null;
+  event_date: string | null; venue: string | null; category: string;
+  status: string; approval_status: string; max_capacity: number;
+  registration_count: number; certificate_uploaded: boolean;
+  color: string | null; banner_url: string | null; description: string | null; organizer_club: string | null;
+}
+
+export interface CompletedEvent {
+  id: string; slug: string; title: string; display_date: string | null;
+  venue: string | null; description: string | null; banner_url: string | null;
+  registration_count: number; certificate_uploaded: boolean;
+  winners: { position: string; name: string; reg_no: string; team_name: string | null }[];
+}
+
+export interface ClubAdminMember {
+  id: string; user_id: string; role: string; department: string | null;
+  year: string | null; joined_at: string; full_name: string; email: string; registration_number: string | null;
+}
+
+export interface BudgetData {
+  total_inflow: number; total_outflow: number; net_balance: number;
+  entries: { id: string; event_name: string; type: string; category: string; amount: number; description: string | null; date: string }[];
+}
+
+export interface BudgetEntryPayload {
+  event_name: string; type: string; category: string; amount: number; description?: string; date: string;
+}
+
+export interface AttendanceData {
+  event_id: string; event_slug: string; event_title: string;
+  display_date: string | null; status: string;
+  total_registered: number; total_attended: number; attendance_rate: number;
+}
