@@ -380,3 +380,45 @@ export interface AttendanceData {
   display_date: string | null; status: string;
   total_registered: number; total_attended: number; attendance_rate: number;
 }
+
+// ── Admin API ─────────────────────────────────────────────────────────────
+export const adminApi = {
+  getStats: () => request<AdminStats>("/admin/stats", {}, true),
+  getEvents: (params?: { status?: string; category?: string; approval?: string }) => {
+    const filtered = params ? Object.entries(params).filter(([, v]) => v != null && v !== "") as [string, string][] : [];
+    const qs = filtered.length > 0 ? "?" + new URLSearchParams(filtered).toString() : "";
+    return request<AdminEvent[]>(`/admin/events${qs}`, {}, true);
+  },
+  getStudents: () => request<AdminStudent[]>("/admin/students", {}, true),
+  getClubs: (faculty?: string) => {
+    const qs = faculty ? `?faculty=${faculty}` : "";
+    return request<AdminClub[]>(`/admin/clubs${qs}`, {}, true);
+  },
+};
+
+export interface AdminStats {
+  total_clubs: number; total_students: number; total_events: number;
+  pending_proposals: number; approved_events: number; total_registrations: number;
+  faculties: number; departments: number;
+  events_by_category: { category: string; count: number }[];
+  clubs_by_faculty: { faculty: string; count: number }[];
+}
+
+export interface AdminEvent {
+  id: string; slug: string; title: string; display_date: string | null;
+  venue: string | null; category: string; status: string; approval_status: string;
+  max_capacity: number; registration_count: number; organizer_club: string | null;
+  created_by_name: string; color: string | null;
+}
+
+export interface AdminStudent {
+  id: string; email: string; is_verified: boolean; created_at: string;
+  full_name: string; registration_number: string | null;
+  branch: string | null; year_of_study: string | null; events_registered: number;
+}
+
+export interface AdminClub {
+  id: string; slug: string; name: string; short_name: string | null;
+  faculty: string; department: string; category: string;
+  members_count: number; is_active: boolean; description: string | null;
+}
