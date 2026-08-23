@@ -52,53 +52,40 @@ CampusConnect replaces the fragmented WhatsApp groups, Instagram pages, and word
 
 ---
 
-## Architecture
-
-┌─────────────────────────────────┐
-│ React + Vite (Vercel) │
-│ TypeScript · Tailwind CSS │
-└────────────────┬────────────────┘
-│ HTTPS REST API
-┌────────────────▼────────────────┐
-│ FastAPI (Render) │
-│ JWT Auth · SQLAlchemy ORM │
-│ Role-based access control │
-└────────────────┬────────────────┘
-│
-┌────────────────▼────────────────┐
-│ PostgreSQL 15 (Neon) │
-│ 22 tables · Triggers · RLS │
-└─────────────────────────────────┘
-
-
+## Architecture                                                                                                                                         React + Vite (Vercel)
+TypeScript · Tailwind CSS
+|
+| HTTPS REST API
+|
+FastAPI (Render)
+JWT Auth · SQLAlchemy ORM
+Role-based access control
+|
+|
+PostgreSQL 15 (Neon)
+22 tables · Triggers · Indexes                                                                                                                          
 ---
 
-## Project Structure
-
-CampusConnect/
+## Project Structure                                                                                                                                    CampusConnect/
 ├── frontend/ # React + Vite + TypeScript
-│ ├── src/
-│ │ ├── pages/ # All route pages
-│ │ ├── components/# Reusable UI components
-│ │ ├── contexts/ # Auth context (JWT)
-│ │ ├── hooks/ # Custom hooks
-│ │ └── lib/ # API client, utilities
-│ └── .env.local # VITE_API_BASE_URL, VITE_GOOGLE_MAPS_KEY
+│ └── src/
+│ ├── pages/ # All route pages
+│ ├── components/ # Reusable UI components
+│ ├── contexts/ # Auth context (JWT)
+│ ├── hooks/ # Custom hooks
+│ └── lib/ # API client, utilities
 ├── backend/ # FastAPI application
-│ ├── app/
-│ │ ├── api/v1/routes/ # auth, events, clubs, club_admin, admin
-│ │ ├── models/ # SQLAlchemy models (22 tables)
-│ │ ├── schemas/ # Pydantic request/response schemas
-│ │ ├── services/ # Business logic (auth, tokens)
-│ │ └── core/ # Config, security (JWT, bcrypt)
-│ └── requirements.txt
+│ └── app/
+│ ├── api/v1/routes/ # auth, events, clubs, club_admin, admin
+│ ├── models/ # SQLAlchemy models (22 tables)
+│ ├── schemas/ # Pydantic request/response schemas
+│ ├── services/ # Business logic (auth, tokens)
+│ └── core/ # Config, security (JWT, bcrypt)
 ├── database/
 │ ├── schema.sql # Complete PostgreSQL schema
 │ ├── seeds.sql # Event and calendar seed data
 │ └── seed_clubs.py # Seeds 82 real MUJ clubs
-└── docs/ # Architecture and API documentation
-
-
+└── docs/ # Architecture and API documentation                                                                                                          
 ---
 
 ## Database Schema
@@ -119,40 +106,34 @@ CampusConnect/
 
 ## API Routes
 
-POST /api/v1/auth/register
+**Auth**                                                                                                                                                POST /api/v1/auth/register
 POST /api/v1/auth/login
 POST /api/v1/auth/refresh
 POST /api/v1/auth/logout
-GET /api/v1/auth/me
-
-GET /api/v1/events/
+GET /api/v1/auth/me                                                                                                                                     
+**Events**                                                                                                                                              GET /api/v1/events/
 POST /api/v1/events/
 GET /api/v1/events/{slug}
 POST /api/v1/events/{slug}/register
 GET /api/v1/events/{slug}/registrations
 GET /api/v1/events/admin/proposals
-POST /api/v1/events/admin/proposals/{id}/review
-
-GET /api/v1/clubs/
+POST /api/v1/events/admin/proposals/{id}/review                                                                                                         
+**Clubs**                                                                                                                                               GET /api/v1/clubs/
 GET /api/v1/clubs/{slug}
 GET /api/v1/clubs/{slug}/members
-PATCH /api/v1/clubs/{slug}
-
-GET /api/v1/club-admin/my-club
+PATCH /api/v1/clubs/{slug}                                                                                                                              
+**Club Admin**                                                                                                                                          GET /api/v1/club-admin/my-club
 GET /api/v1/club-admin/stats
 GET /api/v1/club-admin/events
 GET /api/v1/club-admin/completed-events
 GET /api/v1/club-admin/members
 GET /api/v1/club-admin/budget
 POST /api/v1/club-admin/budget
-GET /api/v1/club-admin/attendance
-
-GET /api/v1/admin/stats
+GET /api/v1/club-admin/attendance                                                                                                                       
+**University Admin**                                                                                                                                    GET /api/v1/admin/stats
 GET /api/v1/admin/events
 GET /api/v1/admin/students
-GET /api/v1/admin/clubs
-
-
+GET /api/v1/admin/clubs                                                                                                                                 
 ---
 
 ## Local Development
@@ -197,8 +178,8 @@ psql your-db-url < database/seeds.sql
 
 | Service | Platform | Config |
 |---------|----------|--------|
-| Frontend | Vercel | Root: `frontend/`, Build: `npm run build` |
-| Backend | Render | Root: `backend/`, Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
+| Frontend | Vercel | Root: `frontend/` · Build: `npm run build` |
+| Backend | Render | Root: `backend/` · Start: `uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
 | Database | Neon | PostgreSQL 15, ap-south-1 |
 
 ---
