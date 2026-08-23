@@ -54,89 +54,51 @@ CampusConnect replaces the fragmented WhatsApp groups, Instagram pages, and word
 
 ## Architecture
 
-```text
-┌──────────────────────────────────────────────┐
-│                  Frontend                    │
-│        React + Vite + TypeScript             │
-│              Tailwind CSS                    │
-│                  Vercel                      │
-└──────────────────────┬───────────────────────┘
-                       │
-                 HTTPS / REST API
-                       │
-                       ▼
-┌──────────────────────────────────────────────┐
-│                  Backend                     │
-│                   FastAPI                    │
-│          JWT Authentication + RBAC           │
-│              SQLAlchemy ORM                  │
-│                   Render                     │
-└──────────────────────┬───────────────────────┘
-                       │
-                       │ SQL
-                       ▼
-┌──────────────────────────────────────────────┐
-│                 PostgreSQL                   │
-│                    Neon                      │
-│                                              │
-│          22 Tables • Triggers • RLS          │
-└──────────────────────────────────────────────┘
+┌─────────────────────────────────┐
+│ React + Vite (Vercel) │
+│ TypeScript · Tailwind CSS │
+└────────────────┬────────────────┘
+│ HTTPS REST API
+┌────────────────▼────────────────┐
+│ FastAPI (Render) │
+│ JWT Auth · SQLAlchemy ORM │
+│ Role-based access control │
+└────────────────┬────────────────┘
+│
+┌────────────────▼────────────────┐
+│ PostgreSQL 15 (Neon) │
+│ 22 tables · Triggers · RLS │
+└─────────────────────────────────┘
+
 
 ---
 
 ## Project Structure
 
-```text
-CampusConnect2/
-│
-├── frontend/                         # React + Vite + TypeScript
-│   ├── src/
-│   │   ├── pages/                    # Application route pages
-│   │   ├── components/               # Reusable UI components
-│   │   ├── contexts/                 # Global React contexts
-│   │   ├── hooks/                    # Custom React hooks
-│   │   ├── lib/                      # API client and utilities
-│   │   └── main.tsx                  # Application entry point
-│   │
-│   ├── .env.local                    # Local frontend environment variables
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vite.config.ts
-│
-├── backend/                          # FastAPI backend
-│   ├── app/
-│   │   ├── api/
-│   │   │   └── v1/
-│   │   │       └── routes/           # REST API endpoints
-│   │   │           ├── auth.py
-│   │   │           ├── events.py
-│   │   │           ├── clubs.py
-│   │   │           ├── club_admin.py
-│   │   │           └── admin.py
-│   │   │
-│   │   ├── models/                   # SQLAlchemy database models
-│   │   ├── schemas/                  # Pydantic request/response schemas
-│   │   ├── services/                 # Business logic
-│   │   └── core/                     # Configuration and security
-│   │       ├── config.py
-│   │       └── security.py
-│   │
-│   ├── requirements.txt
-│   └── main.py                       # FastAPI application entry point
-│
+CampusConnect/
+├── frontend/ # React + Vite + TypeScript
+│ ├── src/
+│ │ ├── pages/ # All route pages
+│ │ ├── components/# Reusable UI components
+│ │ ├── contexts/ # Auth context (JWT)
+│ │ ├── hooks/ # Custom hooks
+│ │ └── lib/ # API client, utilities
+│ └── .env.local # VITE_API_BASE_URL, VITE_GOOGLE_MAPS_KEY
+├── backend/ # FastAPI application
+│ ├── app/
+│ │ ├── api/v1/routes/ # auth, events, clubs, club_admin, admin
+│ │ ├── models/ # SQLAlchemy models (22 tables)
+│ │ ├── schemas/ # Pydantic request/response schemas
+│ │ ├── services/ # Business logic (auth, tokens)
+│ │ └── core/ # Config, security (JWT, bcrypt)
+│ └── requirements.txt
 ├── database/
-│   ├── schema.sql                    # PostgreSQL database schema
-│   ├── seeds.sql                     # Event and calendar seed data
-│   └── seed_clubs.py                 # Club seed script
-│
-├── docs/
-│   ├── architecture.md               # System architecture
-│   └── api.md                        # API documentation
-│
-├── .env.example                      # Environment variable template
-├── .gitignore
-├── CHANGELOG.md
-└── README.md
+│ ├── schema.sql # Complete PostgreSQL schema
+│ ├── seeds.sql # Event and calendar seed data
+│ └── seed_clubs.py # Seeds 82 real MUJ clubs
+└── docs/ # Architecture and API documentation
+
+
 ---
 
 ## Database Schema
