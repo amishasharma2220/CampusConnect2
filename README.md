@@ -52,41 +52,85 @@ CampusConnect replaces the fragmented WhatsApp groups, Instagram pages, and word
 
 ---
 
-## Architecture                                                                                                                                         React + Vite (Vercel)
-TypeScript · Tailwind CSS
-|
-| HTTPS REST API
-|
-FastAPI (Render)
-JWT Auth · SQLAlchemy ORM
-Role-based access control
-|
-|
-PostgreSQL 15 (Neon)
-22 tables · Triggers · Indexes                                                                                                                          
----
+## Architecture
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                         FRONTEND                            │
+│                  React 18 · Vite · TypeScript               │
+│                       Tailwind CSS                          │
+└───────────────────────────┬─────────────────────────────────┘
+                            │
+                            │ HTTPS REST API
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                         BACKEND                             │
+│                    FastAPI · Python 3.11                    │
+│                                                             │
+│     JWT Authentication · RBAC · SQLAlchemy ORM             │
+└───────────────────────────┬─────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                         DATABASE                            │
+│                    PostgreSQL 15 · Neon                     │
+│                                                             │
+│                 22 Tables · Triggers · Indexes               │
+└─────────────────────────────────────────────────────────────┘
+Deployment:
+Vercel → Frontend
+Render → Backend
+Neon → PostgreSQL
+                                                                                                          
+```
 
-## Project Structure                                                                                                                                    CampusConnect/
-├── frontend/ # React + Vite + TypeScript
-│ └── src/
-│ ├── pages/ # All route pages
-│ ├── components/ # Reusable UI components
-│ ├── contexts/ # Auth context (JWT)
-│ ├── hooks/ # Custom hooks
-│ └── lib/ # API client, utilities
-├── backend/ # FastAPI application
-│ └── app/
-│ ├── api/v1/routes/ # auth, events, clubs, club_admin, admin
-│ ├── models/ # SQLAlchemy models (22 tables)
-│ ├── schemas/ # Pydantic request/response schemas
-│ ├── services/ # Business logic (auth, tokens)
-│ └── core/ # Config, security (JWT, bcrypt)
+## Project Structure
+
+```text
+CampusConnect/
+│
+├── frontend/                         # React + Vite + TypeScript
+│   ├── src/
+│   │   ├── pages/                    # All route pages
+│   │   ├── components/               # Reusable UI components
+│   │   ├── contexts/                 # Authentication context (JWT)
+│   │   ├── hooks/                    # Custom React hooks
+│   │   └── lib/                      # API client and utilities
+│   │
+│   ├── public/                       # Static assets
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── backend/                          # FastAPI application
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── v1/
+│   │   │       └── routes/
+│   │   │           ├── auth.py       # Authentication routes
+│   │   │           ├── events.py     # Event routes
+│   │   │           ├── clubs.py      # Club routes
+│   │   │           ├── club_admin.py # Club admin routes
+│   │   │           └── admin.py      # University admin routes
+│   │   │
+│   │   ├── models/                   # SQLAlchemy models
+│   │   ├── schemas/                  # Pydantic schemas
+│   │   ├── services/                 # Business logic
+│   │   ├── core/                     # Configuration and security
+│   │   └── database/                 # Database configuration
+│   │
+│   ├── requirements.txt
+│   └── ...
+│
 ├── database/
-│ ├── schema.sql # Complete PostgreSQL schema
-│ ├── seeds.sql # Event and calendar seed data
-│ └── seed_clubs.py # Seeds 82 real MUJ clubs
-└── docs/ # Architecture and API documentation                                                                                                          
----
+│   ├── schema.sql                    # Complete PostgreSQL schema
+│   ├── seeds.sql                     # Event and calendar seed data
+│   └── seed_clubs.py                 # Seeds 82 MUJ clubs
+│
+├── docs/                             # Architecture and API documentation
+│
+├── README.md
+└── ...
+
+```
 
 ## Database Schema
 
@@ -106,73 +150,114 @@ PostgreSQL 15 (Neon)
 
 ## API Routes
 
-**Auth**                                                                                                                                                POST /api/v1/auth/register
-POST /api/v1/auth/login
-POST /api/v1/auth/refresh
-POST /api/v1/auth/logout
-GET /api/v1/auth/me                                                                                                                                     
-**Events**                                                                                                                                              GET /api/v1/events/
-POST /api/v1/events/
-GET /api/v1/events/{slug}
-POST /api/v1/events/{slug}/register
-GET /api/v1/events/{slug}/registrations
-GET /api/v1/events/admin/proposals
-POST /api/v1/events/admin/proposals/{id}/review                                                                                                         
-**Clubs**                                                                                                                                               GET /api/v1/clubs/
-GET /api/v1/clubs/{slug}
-GET /api/v1/clubs/{slug}/members
-PATCH /api/v1/clubs/{slug}                                                                                                                              
-**Club Admin**                                                                                                                                          GET /api/v1/club-admin/my-club
-GET /api/v1/club-admin/stats
-GET /api/v1/club-admin/events
-GET /api/v1/club-admin/completed-events
-GET /api/v1/club-admin/members
-GET /api/v1/club-admin/budget
-POST /api/v1/club-admin/budget
-GET /api/v1/club-admin/attendance                                                                                                                       
-**University Admin**                                                                                                                                    GET /api/v1/admin/stats
-GET /api/v1/admin/events
-GET /api/v1/admin/students
-GET /api/v1/admin/clubs                                                                                                                                 
+### Authentication
+
+| Method | Endpoint |
+|---|---|
+| `POST` | `/api/v1/auth/register` |
+| `POST` | `/api/v1/auth/login` |
+| `POST` | `/api/v1/auth/refresh` |
+| `POST` | `/api/v1/auth/logout` |
+| `GET` | `/api/v1/auth/me` |
+
+### Events
+
+| Method | Endpoint |
+|---|---|
+| `GET` | `/api/v1/events/` |
+| `POST` | `/api/v1/events/` |
+| `GET` | `/api/v1/events/{slug}` |
+| `POST` | `/api/v1/events/{slug}/register` |
+| `GET` | `/api/v1/events/{slug}/registrations` |
+| `GET` | `/api/v1/events/admin/proposals` |
+| `POST` | `/api/v1/events/admin/proposals/{id}/review` |
+
+### Clubs
+
+| Method | Endpoint |
+|---|---|
+| `GET` | `/api/v1/clubs/` |
+| `GET` | `/api/v1/clubs/{slug}` |
+| `GET` | `/api/v1/clubs/{slug}/members` |
+| `PATCH` | `/api/v1/clubs/{slug}` |
+
+### Club Admin
+
+| Method | Endpoint |
+|---|---|
+| `GET` | `/api/v1/club-admin/my-club` |
+| `GET` | `/api/v1/club-admin/stats` |
+| `GET` | `/api/v1/club-admin/events` |
+| `GET` | `/api/v1/club-admin/completed-events` |
+| `GET` | `/api/v1/club-admin/members` |
+| `GET` | `/api/v1/club-admin/budget` |
+| `POST` | `/api/v1/club-admin/budget` |
+| `GET` | `/api/v1/club-admin/attendance` |
+
+### University Admin
+
+| Method | Endpoint |
+|---|---|
+| `GET` | `/api/v1/admin/stats` |
+| `GET` | `/api/v1/admin/events` |
+| `GET` | `/api/v1/admin/students` |
+| `GET` | `/api/v1/admin/clubs` |
+
+---
+
 ---
 
 ## Local Development
 
+### 1. Clone the Repository
+
 ```bash
-# 1. Clone
 git clone https://github.com/amishasharma2220/CampusConnect2.git
 cd CampusConnect2
 
-# 2. Backend
+```
+
+### 2. Backend:
+
+```bash
 cd backend
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-# create .env with DATABASE_URL and JWT_SECRET_KEY
 uvicorn app.main:app --reload
 
-# 3. Frontend
+```
+
+### 3. Frontend
+```bash
+
 cd frontend
 npm install
-# create .env.local with VITE_API_BASE_URL
 npm run dev
+
+```
+
+### Create backend/.env:
+```bash
+DATABASE_URL=postgresql://user:password@host/dbname
+JWT_SECRET_KEY=your-secret-key
+
+```
+
+
+### Create frontend/.env.local:
+```bash
+
+VITE_API_BASE_URL=http://localhost:8000/api/v1
+VITE_GOOGLE_MAPS_KEY=your-google-maps-key
 ```
 
 ---
-
-## Seed Data
-
+### Seed Data
 ```bash
-# Run schema on your PostgreSQL instance
 psql your-db-url < database/schema.sql
-
-# Seed 82 real MUJ clubs
 cd backend && python3 ../database/seed_clubs.py
-
-# Seed real campus events
 psql your-db-url < database/seeds.sql
 ```
-
----
 
 ## Deployment
 
