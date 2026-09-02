@@ -1,0 +1,49 @@
+# CampusConnect — local dev orchestration
+# Place this at the REPO ROOT (one level above backend/, frontend/, database/)
+# Run with: docker compose up --build
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: campusconnect-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: campusconnect
+      POSTGRES_PASSWORD: localdevpassword
+      POSTGRES_DB: campusconnect
+    ports:
+      - "5433:5432"   # host:container — 5433 to avoid clashing with any local Postgres on 5432
+    volumes:
+      - campusconnect_pgdata:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql:ro   # auto-seeds schema on first boot
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campusconnect -d campusconnect"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: campusconnect-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://campusconnect:localdevpassword@db:5432/campusconnect
+      JWT_SECRET_KEY: local-dev-secret-change-me
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      REFRESH_TOKEN_EXPIRE_DAYS: 7
+      ENVIRONMENT: development
+      PORT: 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app   # live-reload your code without rebuilding the image
+    command: sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+volumes:
+  campusconnect_pgdata:
