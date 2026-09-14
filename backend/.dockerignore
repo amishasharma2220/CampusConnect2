@@ -1,37 +1,40 @@
-# Place this at: backend/.dockerignore
+# Secrets — never bake into the image
+.env
+.env.*
+!.env.example
 
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
 *.egg-info/
-.pytest_cache/
+.eggs/
 .mypy_cache/
+.pytest_cache/
 .ruff_cache/
-
-# Virtual envs
-venv/
+.coverage
+htmlcov/
 .venv/
+venv/
 env/
-
-# Env files — NEVER bake secrets into the image
-.env
-.env.*
-!.env.example
 
 # Git
 .git/
 .gitignore
 
-# IDE
+# Editors / OS
 .vscode/
 .idea/
-
-# OS
 .DS_Store
 
-# Docs / misc not needed at runtime
-*.md
+# Tests (not needed in the runtime image; CI runs these separately)
 tests/
+
+# Docs
+*.md
+docs/
+
+# Misc
+*.log
+.pre-commit-config.yaml

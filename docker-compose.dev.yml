@@ -1,0 +1,21 @@
+# Development override — adds hot reload and mounts source code.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# This layers on top of docker-compose.yml: same db service and network,
+# but the backend container now runs `uvicorn --reload` and mounts your
+# local ./backend/app directory, so code edits take effect immediately
+# without rebuilding the image.
+
+services:
+  backend:
+    # Reuse the same image build, just change how it starts and what's mounted.
+    command: sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    volumes:
+      - ./backend/app:/app/app
+    environment:
+      ENVIRONMENT: development
+      # Uvicorn's --reload uses the reloader process; disable the
+      # Docker HEALTHCHECK's strict retry cadence isn't needed in dev,
+      # but we leave it as-is since it's harmless.
