@@ -2,15 +2,34 @@
 -- CampusConnect Seed Data
 -- Real events from MUJ campus
 -- ============================================================
+-- ============================================================
+-- SYSTEM USER — placeholder "created_by" owner for seeded events.
+-- Not a real login: password_hash is a dummy value that will never
+-- match any bcrypt/passlib verify() call, so this account can't
+-- authenticate even if someone finds the email.
+-- ON CONFLICT makes this safe to re-run.
+-- ============================================================
+
+INSERT INTO users (email, password_hash, role, is_verified, is_active)
+VALUES (
+    'system@campusconnect.internal',
+    'SEED_PLACEHOLDER_NOT_A_VALID_HASH',
+    'university_admin',
+    true,
+    false   -- is_active = false: prevents this from ever logging in even if a login path existed
+)
+ON CONFLICT (email) DO NOTHING;
 
 -- Seed events directly (approved, no auth needed for seeding)
+-- Seed events directly (approved, no auth needed for seeding)
 INSERT INTO events (
-    slug, title, tagline, description, banner_url,
+    created_by, slug, title, tagline, description, banner_url,
     display_date, event_date, time, venue, category,
     organizer_name, organizer_club, max_capacity,
     is_paid, color, status, approval_status, certificate_uploaded
 ) VALUES
 (
+    (SELECT id FROM users WHERE email = 'system@campusconnect.internal'),
     'hackmuj-3',
     'HackMUJ 3.0 — 36-Hour Hackathon',
     'Build innovative solutions in 36 hours',
@@ -22,6 +41,7 @@ INSERT INTO events (
     false, 'from-primary to-accent', 'upcoming', 'approved', false
 ),
 (
+    (SELECT id FROM users WHERE email = 'system@campusconnect.internal'),
     'rang-cultural-fest',
     'Rang — Annual Cultural Fest',
     'A celebration of art, music & culture',
@@ -33,6 +53,7 @@ INSERT INTO events (
     false, 'from-accent to-primary', 'upcoming', 'approved', false
 ),
 (
+    (SELECT id FROM users WHERE email = 'system@campusconnect.internal'),
     'cricket-tournament',
     'Inter-Department Cricket Tournament',
     'Compete for the champion''s trophy',
@@ -44,6 +65,7 @@ INSERT INTO events (
     false, 'from-primary to-accent', 'upcoming', 'approved', false
 ),
 (
+    (SELECT id FROM users WHERE email = 'system@campusconnect.internal'),
     'aiml-workshop',
     'AI/ML Workshop — Hands-On Deep Learning',
     'Build real-world models with expert guidance',
@@ -55,6 +77,7 @@ INSERT INTO events (
     false, 'from-primary to-accent', 'upcoming', 'approved', false
 ),
 (
+    (SELECT id FROM users WHERE email = 'system@campusconnect.internal'),
     'tedxmuj-2026',
     'TEDxMUJ 2026',
     'Ideas worth spreading',
@@ -66,6 +89,7 @@ INSERT INTO events (
     true, 'from-accent to-primary', 'completed', 'approved', true
 ),
 (
+    (SELECT id FROM users WHERE email = 'system@campusconnect.internal'),
     'startup-weekend',
     'Startup Weekend MUJ',
     '54 hours to build your startup',
@@ -77,6 +101,7 @@ INSERT INTO events (
     false, 'from-primary to-accent', 'completed', 'approved', false
 ),
 (
+    (SELECT id FROM users WHERE email = 'system@campusconnect.internal'),
     'photography-walk',
     'Photography Walk — Jaipur Heritage',
     'Explore Jaipur through your lens',
@@ -88,6 +113,7 @@ INSERT INTO events (
     false, 'from-accent to-primary', 'upcoming', 'approved', false
 ),
 (
+    (SELECT id FROM users WHERE email = 'system@campusconnect.internal'),
     'badminton-championship',
     'Badminton Championship 2026',
     'Singles and doubles — compete for glory',
