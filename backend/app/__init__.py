@@ -1,23 +1,3 @@
-from app.models.budget import ClubBudget
-from app.models.calendar import AcademicCalendar
-from app.models.club import Club, ClubMember
-from app.models.event import (
-    Attendance,
-    Certificate,
-    Event,
-    EventProposal,
-    EventRegistration,
-    EventWinner,
-)
-from app.models.leaderboard import LeaderboardPoints
-from app.models.lost_found import LostFoundItem
-from app.models.marketplace import MarketplaceListing, MarketplaceMessage
-from app.models.notification import Notification
-from app.models.payment import Payment
-from app.models.profile import Profile
-from app.models.user import EmailVerification, PasswordReset, Session, User
-from app.models.venue import Venue
-
 __all__ = [
     "ClubBudget",
     "AcademicCalendar",
@@ -42,3 +22,24 @@ __all__ = [
     "User",
     "Venue",
 ]
+
+from app.models.budget import ClubBudget
+from app.models.calendar import AcademicCalendar
+from app.models.club import Club, ClubMember
+from app.models.event import (
+    Attendance,
+    Certificate,
+    Event,
+    EventProposal,
+    EventRegistration,
+    EventWinner,
+)
+from app.models.leaderboard import LeaderboardPoints
+from app.models.lost_found import LostFoundItem
+from app.models.marketplace import MarketplaceListing, MarketplaceMessage
+from app.models.notification import Notification
+from app.models.payment import Payment
+from app.models.profile import Profile
+from app.models.user import EmailVerification, PasswordReset, Session, User
+from app.models.venue import Venue
+

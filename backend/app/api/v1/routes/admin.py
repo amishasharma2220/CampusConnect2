@@ -39,7 +39,7 @@ def get_admin_stats(
 ):
     require_admin(authorization, db)
 
-    total_clubs = db.query(func.count(Club.id)).filter(Club.is_active == True).scalar()
+    total_clubs = db.query(func.count(Club.id)).filter(Club.is_active).scalar()
     total_students = db.query(func.count(User.id)).filter(User.role == UserRole.student).scalar()
     total_events = db.query(func.count(Event.id)).scalar()
     pending_proposals = db.query(func.count(EventProposal.id)).filter(EventProposal.status == ApprovalStatus.pending).scalar()
@@ -53,7 +53,7 @@ def get_admin_stats(
 
     # Clubs by faculty
     by_faculty = db.query(Club.faculty, func.count(Club.id)).filter(
-        Club.is_active == True
+        Club.is_active
     ).group_by(Club.faculty).all()
 
     return {

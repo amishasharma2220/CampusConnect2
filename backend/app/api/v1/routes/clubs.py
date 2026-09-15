@@ -37,7 +37,7 @@ def get_clubs(
     category: str | None = None,
     db: Session = Depends(get_db),
 ):
-    query = db.query(Club).filter(Club.is_active == True)
+    query = db.query(Club).filter(Club.is_active)
     if faculty:
         query = query.filter(Club.faculty == faculty)
     if department:
@@ -65,7 +65,7 @@ def get_club_members(slug: str, db: Session = Depends(get_db)):
 
     members = db.query(ClubMember).filter(
         ClubMember.club_id == club.id,
-        ClubMember.is_active == True
+        ClubMember.is_active
     ).all()
 
     result = []

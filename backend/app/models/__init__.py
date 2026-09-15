@@ -17,3 +17,28 @@ from app.models.payment import Payment
 from app.models.profile import Profile
 from app.models.user import EmailVerification, PasswordReset, Session, User
 from app.models.venue import Venue
+
+__all__ = [
+    "ClubBudget",
+    "AcademicCalendar",
+    "Club",
+    "ClubMember",
+    "Attendance",
+    "Certificate",
+    "Event",
+    "EventProposal",
+    "EventRegistration",
+    "EventWinner",
+    "LeaderboardPoints",
+    "LostFoundItem",
+    "MarketplaceListing",
+    "MarketplaceMessage",
+    "Notification",
+    "Payment",
+    "Profile",
+    "EmailVerification",
+    "PasswordReset",
+    "Session",
+    "User",
+    "Venue",
+]

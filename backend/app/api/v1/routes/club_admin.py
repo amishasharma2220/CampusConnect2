@@ -195,7 +195,7 @@ def get_club_members(
 
     members = db.query(ClubMember).filter(
         ClubMember.club_id == club.id,
-        ClubMember.is_active == True
+        ClubMember.is_active
     ).all()
 
     result = []
