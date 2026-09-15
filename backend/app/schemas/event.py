@@ -1,15 +1,16 @@
-from pydantic import BaseModel
-from typing import Optional, List
-from uuid import UUID
 from datetime import datetime
-from app.models.event import EventStatus, ApprovalStatus, EventCategory, WinnerPosition
+from uuid import UUID
+
+from pydantic import BaseModel
+
+from app.models.event import ApprovalStatus, EventCategory, EventStatus, WinnerPosition
 
 
 class EventWinnerOut(BaseModel):
     position: WinnerPosition
     name: str
     reg_no: str
-    team_name: Optional[str] = None
+    team_name: str | None = None
 
     class Config:
         from_attributes = True
@@ -19,27 +20,27 @@ class EventOut(BaseModel):
     id: UUID
     slug: str
     title: str
-    tagline: Optional[str]
-    description: Optional[str]
-    banner_url: Optional[str]
-    display_date: Optional[str]
-    event_date: Optional[datetime]
-    end_date: Optional[datetime]
-    time: Optional[str]
-    venue: Optional[str]
+    tagline: str | None
+    description: str | None
+    banner_url: str | None
+    display_date: str | None
+    event_date: datetime | None
+    end_date: datetime | None
+    time: str | None
+    venue: str | None
     category: EventCategory
-    organizer_name: Optional[str]
-    organizer_club: Optional[str]
+    organizer_name: str | None
+    organizer_club: str | None
     max_capacity: int
     is_paid: bool
-    ticket_price: Optional[float]
-    color: Optional[str]
+    ticket_price: float | None
+    color: str | None
     status: EventStatus
     approval_status: ApprovalStatus
     certificate_uploaded: bool
     created_at: datetime
-    registration_count: Optional[int] = 0
-    is_registered: Optional[bool] = False
+    registration_count: int | None = 0
+    is_registered: bool | None = False
 
     class Config:
         from_attributes = True
@@ -47,45 +48,45 @@ class EventOut(BaseModel):
 
 class EventCreateRequest(BaseModel):
     title: str
-    tagline: Optional[str] = None
-    description: Optional[str] = None
-    banner_url: Optional[str] = None
-    display_date: Optional[str] = None
-    event_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
-    time: Optional[str] = None
-    venue: Optional[str] = None
+    tagline: str | None = None
+    description: str | None = None
+    banner_url: str | None = None
+    display_date: str | None = None
+    event_date: datetime | None = None
+    end_date: datetime | None = None
+    time: str | None = None
+    venue: str | None = None
     category: EventCategory = EventCategory.Tech
-    organizer_name: Optional[str] = None
-    organizer_club: Optional[str] = None
+    organizer_name: str | None = None
+    organizer_club: str | None = None
     max_capacity: int = 500
     is_paid: bool = False
-    ticket_price: Optional[float] = None
-    registration_deadline: Optional[datetime] = None
-    color: Optional[str] = "from-primary to-accent"
-    club_id: Optional[UUID] = None
+    ticket_price: float | None = None
+    registration_deadline: datetime | None = None
+    color: str | None = "from-primary to-accent"
+    club_id: UUID | None = None
 
 
 class EventUpdateRequest(BaseModel):
-    title: Optional[str] = None
-    tagline: Optional[str] = None
-    description: Optional[str] = None
-    banner_url: Optional[str] = None
-    display_date: Optional[str] = None
-    event_date: Optional[datetime] = None
-    venue: Optional[str] = None
-    max_capacity: Optional[int] = None
-    status: Optional[EventStatus] = None
+    title: str | None = None
+    tagline: str | None = None
+    description: str | None = None
+    banner_url: str | None = None
+    display_date: str | None = None
+    event_date: datetime | None = None
+    venue: str | None = None
+    max_capacity: int | None = None
+    status: EventStatus | None = None
 
 
 class EventRegisterRequest(BaseModel):
     full_name: str
     email: str
-    phone: Optional[str] = None
-    year_of_study: Optional[str] = None
-    branch: Optional[str] = None
+    phone: str | None = None
+    year_of_study: str | None = None
+    branch: str | None = None
 
 
 class ProposalActionRequest(BaseModel):
     status: ApprovalStatus
-    admin_notes: Optional[str] = None
+    admin_notes: str | None = None

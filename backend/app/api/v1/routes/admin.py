@@ -1,18 +1,24 @@
-from fastapi import APIRouter, Depends, HTTPException, Header
-from sqlalchemy.orm import Session
+
+from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy import func
-from typing import Optional
-from app.db.session import get_db
-from app.models.user import User, UserRole
-from app.models.club import Club
-from app.models.event import Event, EventProposal, EventRegistration, ApprovalStatus, EventStatus
-from app.models.profile import Profile
+from sqlalchemy.orm import Session
+
 from app.core.security import decode_token
+from app.db.session import get_db
+from app.models.club import Club
+from app.models.event import (
+    ApprovalStatus,
+    Event,
+    EventProposal,
+    EventRegistration,
+)
+from app.models.profile import Profile
+from app.models.user import User, UserRole
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
 
 
-def require_admin(authorization: Optional[str], db: Session):
+def require_admin(authorization: str | None, db: Session):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authentication required.")
     token = authorization.split(" ")[1]
@@ -29,7 +35,7 @@ def require_admin(authorization: Optional[str], db: Session):
 @router.get("/stats")
 def get_admin_stats(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     require_admin(authorization, db)
 
@@ -67,11 +73,11 @@ def get_admin_stats(
 # ── GET /admin/events ─────────────────────────────────────────────────────────
 @router.get("/events")
 def get_all_events(
-    status: Optional[str] = None,
-    category: Optional[str] = None,
-    approval: Optional[str] = None,
+    status: str | None = None,
+    category: str | None = None,
+    approval: str | None = None,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     require_admin(authorization, db)
 
@@ -113,7 +119,7 @@ def get_all_events(
 @router.get("/students")
 def get_all_students(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     require_admin(authorization, db)
 
@@ -141,9 +147,9 @@ def get_all_students(
 # ── GET /admin/clubs ──────────────────────────────────────────────────────────
 @router.get("/clubs")
 def get_all_clubs_admin(
-    faculty: Optional[str] = None,
+    faculty: str | None = None,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     require_admin(authorization, db)
 

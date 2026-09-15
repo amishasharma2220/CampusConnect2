@@ -1,9 +1,12 @@
+import enum
 import uuid
-from sqlalchemy import Column, Integer, DateTime, Enum as PgEnum
+
+from sqlalchemy import Column, DateTime, Integer
+from sqlalchemy import Enum as PgEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
+
 from app.db.base import Base
-import enum
 
 
 class PointReason(str, enum.Enum):

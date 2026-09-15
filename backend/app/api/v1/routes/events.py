@@ -1,20 +1,31 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Header
-from sqlalchemy.orm import Session
-from sqlalchemy import func
-from typing import List, Optional
-from uuid import UUID
 import re
+from uuid import UUID
 
-from app.db.session import get_db
-from app.models.event import Event, EventRegistration, EventProposal, EventWinner, ApprovalStatus, EventStatus
-from app.models.profile import Profile
-from app.schemas.event import EventOut, EventCreateRequest, EventUpdateRequest, EventRegisterRequest, ProposalActionRequest
+from fastapi import APIRouter, Depends, Header, HTTPException, status
+from sqlalchemy import func
+from sqlalchemy.orm import Session
+
 from app.core.security import decode_token
+from app.db.session import get_db
+from app.models.event import (
+    ApprovalStatus,
+    Event,
+    EventProposal,
+    EventRegistration,
+    EventStatus,
+)
+from app.models.profile import Profile
+from app.schemas.event import (
+    EventCreateRequest,
+    EventOut,
+    EventRegisterRequest,
+    ProposalActionRequest,
+)
 
 router = APIRouter(prefix="/events", tags=["Events"])
 
 
-def get_current_user(authorization: Optional[str], db: Session):
+def get_current_user(authorization: str | None, db: Session):
     if not authorization or not authorization.startswith("Bearer "):
         return None
     token = authorization.split(" ")[1]
@@ -25,7 +36,7 @@ def get_current_user(authorization: Optional[str], db: Session):
     return db.query(User).filter(User.id == payload["sub"]).first()
 
 
-def require_user(authorization: Optional[str], db: Session):
+def require_user(authorization: str | None, db: Session):
     user = get_current_user(authorization, db)
     if not user:
         raise HTTPException(status_code=401, detail="Authentication required.")
@@ -47,12 +58,12 @@ def slugify(title: str) -> str:
 
 
 # ── GET /events — all approved events ──────────────────────────────────────
-@router.get("/", response_model=List[EventOut])
+@router.get("/", response_model=list[EventOut])
 def get_events(
-    category: Optional[str] = None,
-    status: Optional[str] = None,
+    category: str | None = None,
+    status: str | None = None,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     current_user = get_current_user(authorization, db)
 
@@ -94,7 +105,7 @@ def get_events(
 def get_event(
     slug: str,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     current_user = get_current_user(authorization, db)
     event = db.query(Event).filter(Event.slug == slug).first()
@@ -124,7 +135,7 @@ def get_event(
 def create_event(
     data: EventCreateRequest,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = require_user(authorization, db)
     require_role(user, "club_admin", "university_admin")
@@ -188,7 +199,7 @@ def register_for_event(
     slug: str,
     data: EventRegisterRequest,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = require_user(authorization, db)
     event = db.query(Event).filter(Event.slug == slug).first()
@@ -231,7 +242,7 @@ def register_for_event(
 def get_registrations(
     slug: str,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = require_user(authorization, db)
     require_role(user, "club_admin", "university_admin")
@@ -259,7 +270,7 @@ def get_registrations(
 @router.get("/admin/proposals", tags=["Admin"])
 def get_proposals(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = require_user(authorization, db)
     require_role(user, "university_admin")
@@ -292,7 +303,7 @@ def review_proposal(
     proposal_id: UUID,
     data: ProposalActionRequest,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = require_user(authorization, db)
     require_role(user, "university_admin")

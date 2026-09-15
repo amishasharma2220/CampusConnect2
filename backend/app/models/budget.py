@@ -1,9 +1,12 @@
+import enum
 import uuid
-from sqlalchemy import Column, String, Text, Numeric, Date, DateTime, Enum as PgEnum
+
+from sqlalchemy import Column, Date, DateTime, Numeric, Text
+from sqlalchemy import Enum as PgEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
+
 from app.db.base import Base
-import enum
 
 
 class BudgetType(str, enum.Enum):

@@ -1,20 +1,29 @@
-from fastapi import APIRouter, Depends, HTTPException, Header
-from sqlalchemy.orm import Session
-from sqlalchemy import func
-from typing import Optional, List
 from datetime import date
+
+from fastapi import APIRouter, Depends, Header, HTTPException
 from pydantic import BaseModel
-from app.db.session import get_db
-from app.models.club import Club, ClubMember
-from app.models.event import Event, EventRegistration, Attendance, Certificate, EventWinner, ApprovalStatus, EventStatus
-from app.models.budget import ClubBudget, BudgetType, BudgetCategory
-from app.models.profile import Profile
+from sqlalchemy import func
+from sqlalchemy.orm import Session
+
 from app.core.security import decode_token
+from app.db.session import get_db
+from app.models.budget import BudgetCategory, BudgetType, ClubBudget
+from app.models.club import Club, ClubMember
+from app.models.event import (
+    ApprovalStatus,
+    Attendance,
+    Certificate,
+    Event,
+    EventRegistration,
+    EventStatus,
+    EventWinner,
+)
+from app.models.profile import Profile
 
 router = APIRouter(prefix="/club-admin", tags=["Club Admin"])
 
 
-def get_admin_user(authorization: Optional[str], db: Session):
+def get_admin_user(authorization: str | None, db: Session):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authentication required.")
     token = authorization.split(" ")[1]
@@ -30,7 +39,7 @@ def get_admin_user(authorization: Optional[str], db: Session):
     return user
 
 
-def get_admin_club(user, db: Session) -> Optional[Club]:
+def get_admin_club(user, db: Session) -> Club | None:
     return db.query(Club).filter(Club.admin_user_id == user.id).first()
 
 
@@ -38,7 +47,7 @@ def get_admin_club(user, db: Session) -> Optional[Club]:
 @router.get("/my-club")
 def get_my_club(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = get_admin_user(authorization, db)
     club = get_admin_club(user, db)
@@ -69,7 +78,7 @@ def get_my_club(
 @router.get("/stats")
 def get_club_stats(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = get_admin_user(authorization, db)
     club = get_admin_club(user, db)
@@ -109,7 +118,7 @@ def get_club_stats(
 @router.get("/events")
 def get_club_events(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = get_admin_user(authorization, db)
     events = db.query(Event).filter(Event.created_by == user.id).order_by(Event.event_date.desc()).all()
@@ -144,7 +153,7 @@ def get_club_events(
 @router.get("/completed-events")
 def get_completed_events(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = get_admin_user(authorization, db)
     events = db.query(Event).filter(
@@ -177,7 +186,7 @@ def get_completed_events(
 @router.get("/members")
 def get_club_members(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = get_admin_user(authorization, db)
     club = get_admin_club(user, db)
@@ -212,7 +221,7 @@ def get_club_members(
 @router.get("/budget")
 def get_budget(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = get_admin_user(authorization, db)
     club = get_admin_club(user, db)
@@ -247,7 +256,7 @@ class BudgetEntryCreate(BaseModel):
     type: str
     category: str
     amount: float
-    description: Optional[str] = None
+    description: str | None = None
     date: str
 
 
@@ -256,7 +265,7 @@ class BudgetEntryCreate(BaseModel):
 def add_budget_entry(
     data: BudgetEntryCreate,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = get_admin_user(authorization, db)
     club = get_admin_club(user, db)
@@ -282,7 +291,7 @@ def add_budget_entry(
 @router.get("/attendance")
 def get_attendance(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = get_admin_user(authorization, db)
     events = db.query(Event).filter(Event.created_by == user.id).all()

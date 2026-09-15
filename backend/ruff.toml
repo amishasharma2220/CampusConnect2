@@ -1,0 +1,19 @@
+# Interim baseline — deliberately narrower than the full Phase 5 config.
+# Goal right now: catch real bugs (F = pyflakes: unused imports, undefined
+# names, etc.) and basic style (E/W = pycodestyle) without blocking CI on
+# the full opinionated rule set (UP, DTZ, etc.) before the codebase has
+# been swept. Phase 5 will widen this deliberately, rule by rule, with
+# each new category fixed in its own commit instead of a 233-error dump.
+
+target-version = "py311"
+line-length = 100
+
+[lint]
+select = ["E", "F", "W"]
+
+# DTZ003 (naive datetime.utcnow()) is a real bug class, not style — but
+# fixing all call sites needs care (decide UTC vs local intentionally per
+# call site), so it's tracked here as a known follow-up rather than
+# silently ignored forever:
+# TODO(Phase 5): enable "DTZ" and fix backend/app/services/auth.py's
+# three datetime.utcnow() call sites to use datetime.now(timezone.utc).
