@@ -1,9 +1,12 @@
+import enum
 import uuid
-from sqlalchemy import Column, String, Text, Date, Boolean, DateTime, Enum as PgEnum, ARRAY
+
+from sqlalchemy import ARRAY, Column, Date, DateTime, String, Text
+from sqlalchemy import Enum as PgEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
+
 from app.db.base import Base
-import enum
 
 
 class LostFoundType(str, enum.Enum):

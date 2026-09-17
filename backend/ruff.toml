@@ -1,0 +1,28 @@
+# Interim baseline — deliberately narrower than the full Phase 5 config.
+# Goal right now: catch real bugs (F = pyflakes: unused imports, undefined
+# names, etc.) and basic style (E/W = pycodestyle) without blocking CI on
+# the full opinionated rule set (UP, DTZ, etc.) before the codebase has
+# been swept. Phase 5 will widen this deliberately, rule by rule, with
+# each new category fixed in its own commit instead of a large error dump.
+
+target-version = "py311"
+
+# 140 instead of ruff's default 88: this codebase's SQLAlchemy models use
+# verbose, aligned `Column(...)` declarations (PgEnum names, defaults,
+# onupdate=func.now()) that read more clearly on one line than wrapped.
+# Started at 100, bumped to 120, then 140 once actual line lengths in the
+# models were measured — 140 covers the longest current line (135 chars)
+# with a little headroom. Revisit in Phase 5 if the team prefers stricter
+# wrapping or a models-specific per-file-ignore instead.
+line-length = 140
+
+[lint]
+select = ["E", "F", "W"]
+
+# DTZ003 (naive datetime.utcnow()) is a real bug class, not style — but
+# fixing all call sites needs care (decide UTC vs local intentionally per
+# call site), so it's tracked here as a known follow-up rather than
+# silently ignored forever:
+# TODO(Phase 5): enable "DTZ" and fix backend/app/services/auth.py,
+# app/core/security.py, and app/api/v1/routes/events.py's
+# datetime.utcnow() call sites to use datetime.now(timezone.utc).

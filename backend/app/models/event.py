@@ -1,9 +1,12 @@
+import enum
 import uuid
-from sqlalchemy import Column, String, Text, Integer, Boolean, DateTime, Numeric, Enum as PgEnum, ARRAY
+
+from sqlalchemy import Boolean, Column, DateTime, Integer, Numeric, String, Text
+from sqlalchemy import Enum as PgEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
+
 from app.db.base import Base
-import enum
 
 
 class EventStatus(str, enum.Enum):

@@ -1,9 +1,12 @@
+import enum
 import uuid
-from sqlalchemy import Column, String, Text, Integer, Boolean, DateTime, Enum as PgEnum
+
+from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
+from sqlalchemy import Enum as PgEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
+
 from app.db.base import Base
-import enum
 
 
 class ClubCategory(str, enum.Enum):

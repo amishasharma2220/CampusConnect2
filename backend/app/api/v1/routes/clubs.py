@@ -1,18 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Header
-from sqlalchemy.orm import Session
-from typing import List, Optional
-from uuid import UUID
 
+from fastapi import APIRouter, Depends, Header, HTTPException
+from sqlalchemy.orm import Session
+
+from app.core.security import decode_token
 from app.db.session import get_db
 from app.models.club import Club, ClubMember
 from app.models.profile import Profile
-from app.schemas.club import ClubOut, ClubMemberOut, ClubUpdateRequest
-from app.core.security import decode_token
+from app.schemas.club import ClubMemberOut, ClubOut, ClubUpdateRequest
 
 router = APIRouter(prefix="/clubs", tags=["Clubs"])
 
 
-def get_current_user(authorization: Optional[str], db: Session):
+def get_current_user(authorization: str | None, db: Session):
     if not authorization or not authorization.startswith("Bearer "):
         return None
     token = authorization.split(" ")[1]
@@ -23,7 +22,7 @@ def get_current_user(authorization: Optional[str], db: Session):
     return db.query(User).filter(User.id == payload["sub"]).first()
 
 
-def require_user(authorization: Optional[str], db: Session):
+def require_user(authorization: str | None, db: Session):
     user = get_current_user(authorization, db)
     if not user:
         raise HTTPException(status_code=401, detail="Authentication required.")
@@ -31,14 +30,14 @@ def require_user(authorization: Optional[str], db: Session):
 
 
 # ── GET /clubs — all active clubs ──────────────────────────────────────────
-@router.get("/", response_model=List[ClubOut])
+@router.get("/", response_model=list[ClubOut])
 def get_clubs(
-    faculty: Optional[str] = None,
-    department: Optional[str] = None,
-    category: Optional[str] = None,
+    faculty: str | None = None,
+    department: str | None = None,
+    category: str | None = None,
     db: Session = Depends(get_db),
 ):
-    query = db.query(Club).filter(Club.is_active == True)
+    query = db.query(Club).filter(Club.is_active)
     if faculty:
         query = query.filter(Club.faculty == faculty)
     if department:
@@ -58,7 +57,7 @@ def get_club(slug: str, db: Session = Depends(get_db)):
 
 
 # ── GET /clubs/:slug/members ────────────────────────────────────────────────
-@router.get("/{slug}/members", response_model=List[ClubMemberOut])
+@router.get("/{slug}/members", response_model=list[ClubMemberOut])
 def get_club_members(slug: str, db: Session = Depends(get_db)):
     club = db.query(Club).filter(Club.slug == slug).first()
     if not club:
@@ -66,7 +65,7 @@ def get_club_members(slug: str, db: Session = Depends(get_db)):
 
     members = db.query(ClubMember).filter(
         ClubMember.club_id == club.id,
-        ClubMember.is_active == True
+        ClubMember.is_active
     ).all()
 
     result = []
@@ -85,7 +84,7 @@ def update_club(
     slug: str,
     data: ClubUpdateRequest,
     db: Session = Depends(get_db),
-    authorization: Optional[str] = Header(None),
+    authorization: str | None = Header(None),
 ):
     user = require_user(authorization, db)
     club = db.query(Club).filter(Club.slug == slug).first()
@@ -109,7 +108,7 @@ def get_club_events(slug: str, db: Session = Depends(get_db)):
     if not club:
         raise HTTPException(status_code=404, detail="Club not found.")
 
-    from app.models.event import Event, ApprovalStatus
+    from app.models.event import ApprovalStatus, Event
     events = db.query(Event).filter(
         Event.club_id == club.id,
         Event.approval_status == ApprovalStatus.approved

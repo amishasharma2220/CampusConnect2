@@ -1,7 +1,8 @@
-from pydantic import BaseModel, EmailStr
-from typing import Optional
-from uuid import UUID
 from datetime import datetime
+from uuid import UUID
+
+from pydantic import BaseModel, EmailStr
+
 from app.models.user import UserRole
 
 
@@ -10,9 +11,9 @@ class RegisterRequest(BaseModel):
     password: str
     full_name: str
     role: UserRole = UserRole.student
-    registration_number: Optional[str] = None
-    branch: Optional[str] = None
-    year_of_study: Optional[str] = None
+    registration_number: str | None = None
+    branch: str | None = None
+    year_of_study: str | None = None
 
 
 class LoginRequest(BaseModel):
@@ -48,14 +49,14 @@ class ProfileOut(BaseModel):
     id: UUID
     user_id: UUID
     full_name: str
-    registration_number: Optional[str]
-    branch: Optional[str]
-    year_of_study: Optional[str]
-    phone: Optional[str]
-    avatar_url: Optional[str]
-    bio: Optional[str]
-    linkedin_url: Optional[str]
-    github_url: Optional[str]
+    registration_number: str | None
+    branch: str | None
+    year_of_study: str | None
+    phone: str | None
+    avatar_url: str | None
+    bio: str | None
+    linkedin_url: str | None
+    github_url: str | None
     events_attended: int
     certificates_earned: int
 
@@ -64,12 +65,12 @@ class ProfileOut(BaseModel):
 
 
 class ProfileUpdateRequest(BaseModel):
-    full_name: Optional[str] = None
-    registration_number: Optional[str] = None
-    branch: Optional[str] = None
-    year_of_study: Optional[str] = None
-    phone: Optional[str] = None
-    avatar_url: Optional[str] = None
-    bio: Optional[str] = None
-    linkedin_url: Optional[str] = None
-    github_url: Optional[str] = None
+    full_name: str | None = None
+    registration_number: str | None = None
+    branch: str | None = None
+    year_of_study: str | None = None
+    phone: str | None = None
+    avatar_url: str | None = None
+    bio: str | None = None
+    linkedin_url: str | None = None
+    github_url: str | None = None

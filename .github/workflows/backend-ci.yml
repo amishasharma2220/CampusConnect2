@@ -1,0 +1,48 @@
+name: Backend CI
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+  # Lets deploy.yml invoke this as a reusable workflow (uses: ./.github/workflows/backend-ci.yml)
+  workflow_call:
+
+jobs:
+  test:
+    name: Lint & Test (backend)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # ruff/pytest are pinned here rather than assumed to be in
+          # requirements.txt, since Phase 3 (tests) and Phase 5 (ruff
+          # config) may not have landed yet. Once requirements.txt lists
+          # them, this is just a fast no-op re-install.
+          pip install ruff pytest pytest-asyncio pytest-cov httpx
+
+      - name: Run ruff (lint)
+        run: ruff check .
+
+      - name: Run pytest
+        run: |
+          if [ -d "tests" ] && [ -n "$(find tests -name 'test_*.py' -print -quit)" ]; then
+            pytest --cov=app --cov-report=term-missing
+          else
+            echo "::notice::No tests found yet (backend/tests/ — Phase 3) — skipping pytest for now."
+          fi

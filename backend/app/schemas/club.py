@@ -1,7 +1,8 @@
-from pydantic import BaseModel
-from typing import Optional, List
-from uuid import UUID
 from datetime import datetime
+from uuid import UUID
+
+from pydantic import BaseModel
+
 from app.models.club import ClubCategory, MemberRole
 
 
@@ -9,22 +10,22 @@ class ClubOut(BaseModel):
     id: UUID
     slug: str
     name: str
-    short_name: Optional[str]
+    short_name: str | None
     faculty: str
     department: str
     category: ClubCategory
-    description: Optional[str]
-    long_description: Optional[str]
-    logo_url: Optional[str]
-    banner_url: Optional[str]
+    description: str | None
+    long_description: str | None
+    logo_url: str | None
+    banner_url: str | None
     members_count: int
     fee: int
-    faculty_advisor: Optional[str]
-    faculty_email: Optional[str]
-    founded_year: Optional[int]
-    instagram_url: Optional[str]
-    linkedin_url: Optional[str]
-    email: Optional[str]
+    faculty_advisor: str | None
+    faculty_email: str | None
+    founded_year: int | None
+    instagram_url: str | None
+    linkedin_url: str | None
+    email: str | None
     is_active: bool
 
     class Config:
@@ -36,19 +37,19 @@ class ClubMemberOut(BaseModel):
     user_id: UUID
     club_id: UUID
     role: MemberRole
-    department: Optional[str]
-    year: Optional[str]
+    department: str | None
+    year: str | None
     joined_at: datetime
-    full_name: Optional[str] = None
-    avatar_url: Optional[str] = None
+    full_name: str | None = None
+    avatar_url: str | None = None
 
     class Config:
         from_attributes = True
 
 
 class ClubUpdateRequest(BaseModel):
-    description: Optional[str] = None
-    long_description: Optional[str] = None
-    logo_url: Optional[str] = None
-    banner_url: Optional[str] = None
-    faculty_advisor: Optional[str]
+    description: str | None = None
+    long_description: str | None = None
+    logo_url: str | None = None
+    banner_url: str | None = None
+    faculty_advisor: str | None
