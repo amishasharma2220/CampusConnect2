@@ -53,6 +53,9 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
-# $PORT lets this work unchanged on Render (which injects PORT);
-# defaults to 8000 for local/docker-compose use.
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# 1) Apply any pending Alembic migrations (no-op if already at head; the
+#    baseline adopts DBs that were created from schema.sql).
+# 2) Start the API. $PORT lets this work unchanged on Render (which injects
+#    PORT); defaults to 8000 for local/docker-compose use.
+# `exec` makes uvicorn PID 1 so it receives shutdown signals directly.
+CMD ["sh", "-c", "alembic upgrade head && exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
