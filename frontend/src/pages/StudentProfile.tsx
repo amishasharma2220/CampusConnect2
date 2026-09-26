@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { getErrorMessage } from "@/lib/utils";
 import { LayoutDashboard, Search, CalendarCheck, Award, UserCircle, MapPin, Lock, Save } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { getAccessToken } from "@/lib/api";
 
 const sidebarLinks = [
@@ -21,7 +22,7 @@ const sidebarLinks = [
 const StudentProfile = () => {
   const { toast } = useToast();
   const { user, logout } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     name: user?.full_name || "",
@@ -41,8 +42,8 @@ const StudentProfile = () => {
       });
       if (!res.ok) throw new Error("Failed to save");
       toast({ title: "Profile Updated", description: "Your profile has been saved." });
-    } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } catch (err: unknown) {
+      toast({ title: "Error", description: getErrorMessage(err), variant: "destructive" });
     } finally {
       setSaving(false);
     }

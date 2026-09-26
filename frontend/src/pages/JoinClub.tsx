@@ -22,7 +22,7 @@ const JoinClub = () => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [txnId, setTxnId] = useState<string | null>(null);
-  
+
 
   const club = useMemo(() => getClubById(selectedClub), [selectedClub]);
   const fee = club?.fee ?? DEFAULT_CLUB_FEE;

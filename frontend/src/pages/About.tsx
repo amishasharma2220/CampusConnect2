@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Target, Users, Zap, Heart, Globe, Shield } from "lucide-react";
+import { Target, Users, Zap, Heart, Globe, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/landing/Navbar";

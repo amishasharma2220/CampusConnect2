@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Users, ChevronDown, ChevronUp, ArrowLeft, Building2, GraduationCap, Layers } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -15,17 +15,18 @@ const Clubs = () => {
   const [expandedDept, setExpandedDept] = useState<string | null>(null);
   const [filterCategory, setFilterCategory] = useState("All");
 
-  const matchClub = (c: Club) => {
+  const matchClub = useCallback((c: Club) => {
+    const query = search.toLowerCase();
     const matchSearch =
-      c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.description.toLowerCase().includes(search.toLowerCase()) ||
-      c.faculty.toLowerCase().includes(search.toLowerCase()) ||
-      c.department.toLowerCase().includes(search.toLowerCase());
+      c.name.toLowerCase().includes(query) ||
+      c.description.toLowerCase().includes(query) ||
+      c.faculty.toLowerCase().includes(query) ||
+      c.department.toLowerCase().includes(query);
     const matchCat = filterCategory === "All" || c.category === filterCategory;
     return matchSearch && matchCat;
-  };
+  }, [search, filterCategory]);
 
-  const filtered = useMemo(() => clubs.filter(matchClub), [search, filterCategory]);
+  const filtered = useMemo(() => clubs.filter(matchClub), [matchClub]);
   const totalClubs = clubs.length;
 
   return (

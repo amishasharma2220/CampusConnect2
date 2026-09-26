@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getErrorMessage } from "@/lib/utils";
 import {
   LayoutDashboard, PlusCircle, Settings, Calendar,
   Clock, MapPin, AlignLeft, Tag, Send, Users, FileText
@@ -8,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { eventsApi } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
 
@@ -102,7 +103,7 @@ const CreateEvent = () => {
           : undefined,
       };
 
-      const created = await eventsApi.create(payload);
+      await eventsApi.create(payload);
 
       toast({
         title: "Event submitted for approval!",
@@ -120,10 +121,10 @@ const CreateEvent = () => {
       // Navigate to manage events
       setTimeout(() => navigate("/club/manage-events"), 1500);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast({
         title: "Failed to create event",
-        description: err.message,
+        description: getErrorMessage(err),
         variant: "destructive",
       });
     } finally {

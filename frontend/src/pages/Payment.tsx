@@ -2,6 +2,15 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
+/** State passed to /payment via navigate("/payment", { state }). */
+export interface PaymentState {
+  amount: number;
+  title: string;
+  subtitle?: string;
+  returnTo: string;
+  meta?: Record<string, string>;
+}
+
 const MyEvents = () => (
   <div className="min-h-screen bg-background flex items-center justify-center">
     <div className="text-center">

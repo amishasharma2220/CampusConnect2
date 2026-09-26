@@ -1,25 +1,20 @@
 import { useEffect, useState } from "react";
+import { getErrorMessage } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  ArrowLeft, Shield, Users, Calendar, ClipboardList,
-  CheckCircle, XCircle, Clock, Search, Filter,
-  BarChart3, BookOpen, Trophy, UserCheck, Layers,
-} from "lucide-react";
+import { ArrowLeft, Shield, Users, Calendar, ClipboardList, CheckCircle, XCircle, Clock, Search, BarChart3, BookOpen, UserCheck, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { eventsApi, adminApi, AdminStats, AdminEvent, AdminStudent, AdminClub, Proposal } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
 
 type Tab = "overview" | "approvals" | "events" | "clubs" | "students";
 
 const FACULTIES = ["All", "FoSTA", "FoMCA", "FoL", "FoHS", "DSW"];
 
 const AdminDashboard = () => {
-  const { user } = useAuth();
   const { toast } = useToast();
   const [tab, setTab] = useState<Tab>("overview");
   const [stats, setStats] = useState<AdminStats | null>(null);
@@ -54,7 +49,7 @@ const AdminDashboard = () => {
     if (tab === "clubs" && clubs.length === 0) {
       adminApi.getClubs().then(setClubs).catch(() => {});
     }
-  }, [tab]);
+  }, [tab, events.length, students.length, clubs.length]);
 
   const handleReview = async (proposalId: string, status: "approved" | "rejected") => {
     setActionLoading(proposalId + status);
@@ -63,8 +58,8 @@ const AdminDashboard = () => {
       setProposals(prev => prev.filter(p => p.proposal_id !== proposalId));
       setStats(prev => prev ? { ...prev, pending_proposals: Math.max(0, prev.pending_proposals - 1) } : prev);
       toast({ title: status === "approved" ? "Event approved!" : "Event rejected", description: status === "approved" ? "Now live for students." : "Club admin will be notified." });
-    } catch (err: any) {
-      toast({ title: "Action failed", description: err.message, variant: "destructive" });
+    } catch (err: unknown) {
+      toast({ title: "Action failed", description: getErrorMessage(err), variant: "destructive" });
     } finally {
       setActionLoading(null);
     }

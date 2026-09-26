@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getErrorMessage } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Hash, GraduationCap, Shield, Users } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 type Role = "student" | "club_admin" | "university_admin";
 
@@ -71,8 +72,8 @@ const Register = () => {
       if (selectedRole === "university_admin") navigate("/university-admin");
       else if (selectedRole === "club_admin") navigate("/club/dashboard");
       else navigate("/student/dashboard");
-    } catch (err: any) {
-      toast({ title: "Registration failed", description: err.message, variant: "destructive" });
+    } catch (err: unknown) {
+      toast({ title: "Registration failed", description: getErrorMessage(err), variant: "destructive" });
     } finally {
       setIsLoading(false);
     }

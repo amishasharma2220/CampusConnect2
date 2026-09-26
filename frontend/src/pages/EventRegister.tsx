@@ -1,12 +1,12 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { getErrorMessage } from "@/lib/utils";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { Calendar, Clock, MapPin, Users, ArrowLeft, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { eventsApi, Event } from "@/lib/api";
 
 const EventRegister = () => {
@@ -68,8 +68,8 @@ const EventRegister = () => {
       });
       setSubmitted(true);
       toast({ title: "Registration successful!", description: `You're registered for ${event.title}` });
-    } catch (err: any) {
-      toast({ title: "Registration failed", description: err.message, variant: "destructive" });
+    } catch (err: unknown) {
+      toast({ title: "Registration failed", description: getErrorMessage(err), variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
