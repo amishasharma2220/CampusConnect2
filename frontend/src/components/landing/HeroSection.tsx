@@ -52,7 +52,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg sm:text-xl text-secondary-foreground/70 mb-10 max-w-2xl leading-relaxed"
           >
-            Discover, organize, and attend the best events at MUJ. From tech fests to cultural nights — 
+            Discover, organize, and attend the best events at MUJ. From tech fests to cultural nights —
             CampusConnect brings your college life together.
           </motion.p>
 

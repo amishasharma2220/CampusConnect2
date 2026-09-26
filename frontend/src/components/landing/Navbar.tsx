@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, Bell, LayoutDashboard, User, CalendarCheck, Award, LogOut, Settings, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -33,10 +33,6 @@ const Navbar = () => {
     ? user.full_name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : "??";
 
-  const dashboardPath =
-    user?.role === "university_admin" ? "/university-admin"
-    : user?.role === "club_admin" ? "/club/dashboard"
-    : "/student/dashboard";
 
   const roleLabel =
     user?.role === "university_admin" ? "University Admin"

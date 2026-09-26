@@ -1,10 +1,11 @@
 __all__ = [
-    "ClubBudget",
     "AcademicCalendar",
-    "Club",
-    "ClubMember",
     "Attendance",
     "Certificate",
+    "Club",
+    "ClubBudget",
+    "ClubMember",
+    "EmailVerification",
     "Event",
     "EventProposal",
     "EventRegistration",
@@ -14,10 +15,9 @@ __all__ = [
     "MarketplaceListing",
     "MarketplaceMessage",
     "Notification",
+    "PasswordReset",
     "Payment",
     "Profile",
-    "EmailVerification",
-    "PasswordReset",
     "Session",
     "User",
     "Venue",
@@ -42,4 +42,3 @@ from app.models.payment import Payment
 from app.models.profile import Profile
 from app.models.user import EmailVerification, PasswordReset, Session, User
 from app.models.venue import Venue
-

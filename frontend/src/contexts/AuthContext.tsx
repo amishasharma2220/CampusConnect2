@@ -1,35 +1,6 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { authApi, AuthResponse, UserProfile, setTokens, clearTokens, setUser, getUser, getAccessToken } from "@/lib/api";
-
-interface AuthContextType {
-  user: UserProfile | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<AuthResponse>;
-  register: (data: RegisterData) => Promise<AuthResponse>;
-  logout: () => void;
-  isAuthenticated: boolean;
-}
-
-interface RegisterData {
-  email: string;
-  password: string;
-  full_name: string;
-  role?: string;
-  registration_number?: string;
-  branch?: string;
-  year_of_study?: string;
-}
-
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  loading: true,
-  login: async () => { throw new Error("Auth not ready"); },
-  register: async () => { throw new Error("Auth not ready"); },
-  logout: () => {},
-  isAuthenticated: false,
-});
-
-export const useAuth = () => useContext(AuthContext);
+import { useEffect, useState, ReactNode } from "react";
+import { authApi, AuthResponse, setTokens, clearTokens, setUser, getUser, getAccessToken, UserProfile } from "@/lib/api";
+import { AuthContext, type RegisterData } from "@/contexts/auth-context";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<UserProfile | null>(getUser());

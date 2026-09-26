@@ -1,0 +1,44 @@
+# Pre-commit hooks for CampusConnect.
+#
+# One-time setup (from the repo root, with the backend venv active):
+#   pip install pre-commit
+#   pre-commit install
+#
+# After that, these checks run automatically on every `git commit`, only on
+# the files you're committing. Run them on everything with:
+#   pre-commit run --all-files
+#
+# CI runs the same ruff and ESLint checks, so anything that slips past here
+# (e.g. a commit made with --no-verify) still gets caught on the PR.
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: detect-private-key
+
+  # Backend: ruff uses backend/ruff.toml automatically.
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.9
+    hooks:
+      - id: ruff-check
+        args: ["--fix"]
+        files: ^backend/
+
+  # Frontend: uses the project's own ESLint (frontend/node_modules), so run
+  # `npm install` in frontend/ once before committing frontend changes.
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint (frontend)
+        language: system
+        entry: bash -c 'cd frontend && npx eslint --max-warnings 0 "${@#frontend/}"' --
+        files: ^frontend/.*\.(ts|tsx|js|jsx)$
+        exclude: ^frontend/dist/

@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.models.event import ApprovalStatus, EventCategory, EventStatus, WinnerPosition
 
@@ -12,8 +12,7 @@ class EventWinnerOut(BaseModel):
     reg_no: str
     team_name: str | None = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class EventOut(BaseModel):
@@ -42,8 +41,7 @@ class EventOut(BaseModel):
     registration_count: int | None = 0
     is_registered: bool | None = False
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class EventCreateRequest(BaseModel):

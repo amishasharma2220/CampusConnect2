@@ -6,7 +6,7 @@ from sqlalchemy import Enum as PgEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 
-from app.db.base import Base
+from app.db.base import Base, enum_values
 
 
 class EventStatus(str, enum.Enum):
@@ -72,7 +72,7 @@ class EventWinner(Base):
 
     id         = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     event_id   = Column(UUID(as_uuid=True), nullable=False, index=True)
-    position   = Column(PgEnum(WinnerPosition, name="winner_position"), nullable=False)
+    position   = Column(PgEnum(WinnerPosition, name="winner_position", values_callable=enum_values), nullable=False)
     name       = Column(Text, nullable=False)
     reg_no     = Column(String, nullable=False)
     team_name  = Column(String, nullable=True)

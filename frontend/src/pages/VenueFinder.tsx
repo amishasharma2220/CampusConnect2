@@ -52,7 +52,20 @@ const typeColors: Record<string, string> = {
   hostel: "bg-rose-100 text-rose-700 border-rose-200",
 };
 
-declare global { interface Window { google: any; initMUJMap?: () => void; } }
+// Minimal typings for the parts of the Google Maps JS API this page uses
+// (avoids `any` without adding the full @types/google.maps package).
+interface LatLngLiteral { lat: number; lng: number }
+interface GoogleMap { panTo(position: LatLngLiteral): void; setZoom(zoom: number): void }
+interface GoogleMarker { addListener(event: "click", handler: () => void): void }
+interface GoogleInfoWindow { setContent(html: string): void; open(map: GoogleMap, anchor: GoogleMarker): void }
+interface GoogleMapsApi {
+  Map: new (element: HTMLElement, options: Record<string, unknown>) => GoogleMap;
+  Marker: new (options: Record<string, unknown>) => GoogleMarker;
+  InfoWindow: new () => GoogleInfoWindow;
+  Animation: { DROP: unknown };
+}
+
+declare global { interface Window { google?: { maps: GoogleMapsApi }; initMUJMap?: () => void; } }
 
 const VenueFinder = () => {
   const [search, setSearch] = useState("");
@@ -61,9 +74,9 @@ const VenueFinder = () => {
   const [showDirections, setShowDirections] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<any>(null);
-  const markersRef = useRef<Record<string, any>>({});
-  const infoWindowRef = useRef<any>(null);
+  const mapInstance = useRef<GoogleMap | null>(null);
+  const markersRef = useRef<Record<string, GoogleMarker>>({});
+  const infoWindowRef = useRef<GoogleInfoWindow | null>(null);
 
   const types = ["all", "auditorium", "lab", "ground", "hall", "classroom", "library", "hostel"];
 
@@ -86,16 +99,19 @@ const VenueFinder = () => {
 
   useEffect(() => {
     if (!mapReady || !mapRef.current || mapInstance.current) return;
+    if (!window.google) return;
     const g = window.google.maps;
-    mapInstance.current = new g.Map(mapRef.current, { center: MUJ_CENTER, zoom: 16, mapTypeId: "hybrid", streetViewControl: false });
-    infoWindowRef.current = new g.InfoWindow();
+    const map = new g.Map(mapRef.current, { center: MUJ_CENTER, zoom: 16, mapTypeId: "hybrid", streetViewControl: false });
+    const infoWindow = new g.InfoWindow();
+    mapInstance.current = map;
+    infoWindowRef.current = infoWindow;
 
     venues.forEach(v => {
-      const marker = new g.Marker({ position: { lat: v.lat, lng: v.lng }, map: mapInstance.current, title: v.name, animation: g.Animation.DROP });
+      const marker = new g.Marker({ position: { lat: v.lat, lng: v.lng }, map, title: v.name, animation: g.Animation.DROP });
       marker.addListener("click", () => {
         setSelectedVenue(v);
-        infoWindowRef.current.setContent(`<div style="font-family:system-ui;max-width:220px;"><strong style="color:#b45309;">${v.name}</strong><br/><span style="font-size:12px;color:#555;">${v.location}</span><br/><a href="https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}" target="_blank" rel="noopener" style="font-size:12px;color:#0369a1;">Open in Google Maps →</a></div>`);
-        infoWindowRef.current.open(mapInstance.current, marker);
+        infoWindow.setContent(`<div style="font-family:system-ui;max-width:220px;"><strong style="color:#b45309;">${v.name}</strong><br/><span style="font-size:12px;color:#555;">${v.location}</span><br/><a href="https://www.google.com/maps/dir/?api=1&destination=${v.lat},${v.lng}" target="_blank" rel="noopener" style="font-size:12px;color:#0369a1;">Open in Google Maps →</a></div>`);
+        infoWindow.open(map, marker);
       });
       markersRef.current[v.id] = marker;
     });

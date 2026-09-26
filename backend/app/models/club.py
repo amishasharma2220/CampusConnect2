@@ -6,7 +6,7 @@ from sqlalchemy import Enum as PgEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 
-from app.db.base import Base
+from app.db.base import Base, enum_values
 
 
 class ClubCategory(str, enum.Enum):
@@ -68,7 +68,7 @@ class ClubMember(Base):
     id         = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     club_id    = Column(UUID(as_uuid=True), nullable=False, index=True)
     user_id    = Column(UUID(as_uuid=True), nullable=False, index=True)
-    role       = Column(PgEnum(MemberRole, name="member_role"), nullable=False, default=MemberRole.Member)
+    role       = Column(PgEnum(MemberRole, name="member_role", values_callable=enum_values), nullable=False, default=MemberRole.Member)
     department = Column(String, nullable=True)
     year       = Column(String, nullable=True)
     is_active  = Column(Boolean, nullable=False, default=True)

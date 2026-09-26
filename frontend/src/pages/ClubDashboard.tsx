@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Users, CheckCircle2, Clock, AlertTriangle, Mail, GraduationCap, Trophy, FileCheck, UserPlus, Ticket, BarChart3, PlusCircle } from "lucide-react";
+import { Calendar, Users, CheckCircle2, Clock, AlertTriangle, Mail, GraduationCap, Trophy, FileCheck, UserPlus, Ticket, PlusCircle } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import StatsCard from "@/components/dashboard/StatsCard";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { clubAdminApi, ClubAdminProfile, ClubStats, ClubAdminEvent } from "@/lib/api";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { clubSidebarLinks } from "@/lib/clubSidebar";
 
 const ClubDashboard = () => {

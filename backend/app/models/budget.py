@@ -6,7 +6,7 @@ from sqlalchemy import Enum as PgEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 
-from app.db.base import Base
+from app.db.base import Base, enum_values
 
 
 class BudgetType(str, enum.Enum):
@@ -35,7 +35,7 @@ class ClubBudget(Base):
     event_id    = Column(UUID(as_uuid=True), nullable=True)
     event_name  = Column(Text, nullable=False)
     type        = Column(PgEnum(BudgetType, name="budget_type"), nullable=False)
-    category    = Column(PgEnum(BudgetCategory, name="budget_category"), nullable=False)
+    category    = Column(PgEnum(BudgetCategory, name="budget_category", values_callable=enum_values), nullable=False)
     amount      = Column(Numeric(12, 2), nullable=False)
     description = Column(Text, nullable=True)
     date        = Column(Date, nullable=False)

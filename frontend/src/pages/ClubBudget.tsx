@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getErrorMessage } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { IndianRupee, TrendingUp, TrendingDown, Plus } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -9,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { clubAdminApi, BudgetData } from "@/lib/api";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { clubSidebarLinks } from "@/lib/clubSidebar";
 
 const CATEGORIES = ["Sponsorship","Registration Fees","Ticket Sales","Venue & Logistics","Prizes","Food & Beverages","Speaker Fees","Production","Marketing","Miscellaneous"];
@@ -45,8 +46,8 @@ const ClubBudget = () => {
       setShowForm(false);
       setForm({ event_name: "", type: "inflow", category: "Sponsorship", amount: "", date: new Date().toISOString().split("T")[0], description: "" });
       fetchBudget();
-    } catch (err: any) {
-      toast({ title: "Failed to add entry", description: err.message, variant: "destructive" });
+    } catch (err: unknown) {
+      toast({ title: "Failed to add entry", description: getErrorMessage(err), variant: "destructive" });
     } finally {
       setSubmitting(false);
     }

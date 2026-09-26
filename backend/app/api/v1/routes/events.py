@@ -1,4 +1,5 @@
 import re
+from datetime import UTC, datetime
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
@@ -312,11 +313,10 @@ def review_proposal(
     if not proposal:
         raise HTTPException(status_code=404, detail="Proposal not found.")
 
-    from datetime import datetime
     proposal.status = data.status
     proposal.admin_notes = data.admin_notes
     proposal.reviewed_by = user.id
-    proposal.reviewed_at = datetime.utcnow()
+    proposal.reviewed_at = datetime.now(UTC)
 
     # Update event approval status too
     event = db.query(Event).filter(Event.id == proposal.event_id).first()

@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 from app.models.user import UserRole
 
@@ -41,8 +41,7 @@ class UserOut(BaseModel):
     is_verified: bool
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ProfileOut(BaseModel):
@@ -60,8 +59,7 @@ class ProfileOut(BaseModel):
     events_attended: int
     certificates_earned: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ProfileUpdateRequest(BaseModel):

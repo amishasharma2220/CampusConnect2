@@ -3,7 +3,7 @@ import { BarChart3, TrendingUp, Users, Calendar, Award } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Skeleton } from "@/components/ui/skeleton";
 import { clubAdminApi, ClubStats, ClubAdminEvent } from "@/lib/api";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { clubSidebarLinks } from "@/lib/clubSidebar";
 
 const ClubAnalytics = () => {

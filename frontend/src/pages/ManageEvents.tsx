@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { eventsApi, Event } from "@/lib/api";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const sidebarLinks = [
   { label: "Dashboard", href: "/club/dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
@@ -20,7 +20,7 @@ const statusIcon = (approval: string) => {
   return <Clock className="w-4 h-4 text-yellow-500" />;
 };
 
-const statusColor = (approval: string) => {
+const statusColor = (approval: string): "default" | "destructive" | "secondary" => {
   if (approval === "approved") return "default";
   if (approval === "rejected") return "destructive";
   return "secondary";
@@ -91,7 +91,7 @@ const ManageEvents = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  <Badge variant={statusColor(event.approval_status) as any}>
+                  <Badge variant={statusColor(event.approval_status)}>
                     {event.approval_status}
                   </Badge>
                   <Badge variant="outline">{event.status}</Badge>
