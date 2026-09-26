@@ -1,5 +1,5 @@
 import hashlib
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -59,7 +59,7 @@ def authenticate_user(db: Session, data: LoginRequest) -> User:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password.")
     if not user.is_active:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is disabled.")
-    user.last_login_at = datetime.utcnow()
+    user.last_login_at = datetime.now(UTC)
     db.commit()
     return user
 
@@ -73,7 +73,7 @@ def create_tokens(db: Session, user: User) -> dict:
     session = UserSession(
         user_id=user.id,
         refresh_token_hash=token_hash,
-        expires_at=datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
+        expires_at=datetime.now(UTC) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
     )
     db.add(session)
     db.commit()
@@ -100,9 +100,9 @@ def refresh_access_token(db: Session, refresh_token: str) -> dict:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Session not found. Please log in again.")
 
     expires = session.expires_at
-    if expires.tzinfo is not None:
-        expires = expires.replace(tzinfo=None)
-    if expires < datetime.utcnow():
+    if expires.tzinfo is None:  # defensive: treat naive values as UTC
+        expires = expires.replace(tzinfo=UTC)
+    if expires < datetime.now(UTC):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Session expired. Please log in again.")
 
     user = get_user_by_id(db, payload["sub"])

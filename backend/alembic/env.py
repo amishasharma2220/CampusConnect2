@@ -24,10 +24,10 @@ filters keep autogenerate from proposing harmful or pointless changes:
 
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import ARRAY, String, Text, engine_from_config, inspect, pool
 
 import app.models  # noqa: F401  (registers all models on Base.metadata)
-from alembic import context
 from app.core.config import settings
 from app.db.base import Base
 
@@ -75,9 +75,9 @@ def _is_text_like(t) -> bool:
 
 def compare_type(ctx, inspected_column, metadata_column, inspected_type, metadata_type):
     # 3. TEXT/CITEXT in the DB vs String() (no length) in the model -> same thing.
-    if isinstance(metadata_type, String) and not isinstance(metadata_type, Text) and metadata_type.length is None:
-        if _is_text_like(inspected_type):
-            return False
+    is_plain_string = isinstance(metadata_type, String) and not isinstance(metadata_type, Text) and metadata_type.length is None
+    if is_plain_string and _is_text_like(inspected_type):
+        return False
     if isinstance(inspected_type, ARRAY) and isinstance(metadata_type, ARRAY):
         mi, ii = metadata_type.item_type, inspected_type.item_type
         if isinstance(mi, String) and getattr(mi, "length", None) is None and _is_text_like(ii):

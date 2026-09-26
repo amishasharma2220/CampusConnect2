@@ -19,12 +19,13 @@ from app.models.user import EmailVerification, PasswordReset, Session, User
 from app.models.venue import Venue
 
 __all__ = [
-    "ClubBudget",
     "AcademicCalendar",
-    "Club",
-    "ClubMember",
     "Attendance",
     "Certificate",
+    "Club",
+    "ClubBudget",
+    "ClubMember",
+    "EmailVerification",
     "Event",
     "EventProposal",
     "EventRegistration",
@@ -34,10 +35,9 @@ __all__ = [
     "MarketplaceListing",
     "MarketplaceMessage",
     "Notification",
+    "PasswordReset",
     "Payment",
     "Profile",
-    "EmailVerification",
-    "PasswordReset",
     "Session",
     "User",
     "Venue",
