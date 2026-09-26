@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     # CORS
     FRONTEND_URL: str = "http://localhost:5173"
 
+    # Razorpay (use rzp_test_... keys outside production). Empty = payments
+    # disabled: the order endpoint returns 503 instead of crashing.
+    RAZORPAY_KEY_ID: str = ""
+    RAZORPAY_KEY_SECRET: str = ""
+
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
 

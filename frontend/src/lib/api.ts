@@ -422,3 +422,42 @@ export interface AdminClub {
   faculty: string; department: string; category: string;
   members_count: number; is_active: boolean; description: string | null;
 }
+
+// ── Payments (Razorpay) ──────────────────────────────────────
+export interface ClubMembershipOrder {
+  order_id: string;
+  amount: number; // paise
+  currency: string;
+  key_id: string;
+  club_slug: string;
+  club_name: string;
+  prefill_name: string;
+  prefill_email: string;
+}
+
+export interface RazorpayCheckoutResult {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+export interface PaymentVerification {
+  status: "paid";
+  club_slug: string;
+  club_name: string;
+  payment_id: string;
+}
+
+export const paymentsApi = {
+  createClubMembershipOrder: (clubSlug: string) =>
+    request<ClubMembershipOrder>("/payments/club-membership/order", {
+      method: "POST",
+      body: JSON.stringify({ club_slug: clubSlug }),
+    }, true),
+
+  verify: (result: RazorpayCheckoutResult & { year?: string; branch?: string }) =>
+    request<PaymentVerification>("/payments/verify", {
+      method: "POST",
+      body: JSON.stringify(result),
+    }, true),
+};

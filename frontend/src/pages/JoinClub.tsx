@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { clubs, faculties, categoryConfig, getClubById, DEFAULT_CLUB_FEE } from "@/data/clubsData";
 import type { PaymentState } from "@/pages/Payment";
 
 const JoinClub = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -22,6 +23,8 @@ const JoinClub = () => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [txnId, setTxnId] = useState<string | null>(null);
+  const [year, setYear] = useState("");
+  const [branch, setBranch] = useState("");
 
 
   const club = useMemo(() => getClubById(selectedClub), [selectedClub]);
@@ -40,23 +43,30 @@ const JoinClub = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!year) {
+      toast({ title: "Select your year", description: "Please choose your year of study.", variant: "destructive" });
+      return;
+    }
     if (!selectedClub) {
       toast({ title: "Select a Club", description: "Please choose a club to register for.", variant: "destructive" });
       return;
     }
+    if (!user) {
+      toast({ title: "Please log in first", description: "Your club membership is linked to your CampusConnect account." });
+      navigate("/login");
+      return;
+    }
     setLoading(true);
-    // Kick off checkout — payment page will return with { paid: true }
+    // The payment page creates a Razorpay order on the server (which sets the
+    // real amount) and returns here with { paid: true } once verified.
     const payment: PaymentState = {
       amount: fee,
       title: `Join ${club?.name ?? "Club"}`,
       subtitle: "Freshers' membership fee (one-time)",
       returnTo: `/join-club?club=${selectedClub}`,
-      meta: { clubId: selectedClub },
+      meta: { clubId: selectedClub, year, branch },
     };
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/payment", { state: payment });
-    }, 300);
+    navigate("/payment", { state: payment });
   };
 
   if (submitted) {
@@ -141,34 +151,25 @@ const JoinClub = () => {
             </Select>
           </div>
 
-          {/* Student Details */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name *</Label>
-              <Input id="fullName" placeholder="Your full name" required />
+          {/* Account */}
+          {user ? (
+            <div className="rounded-xl bg-muted/50 p-4 text-sm">
+              <p className="text-muted-foreground">Joining as</p>
+              <p className="font-semibold text-foreground">{user.full_name || user.email}</p>
+              <p className="text-muted-foreground">{user.email}</p>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="regNo">Registration Number *</Label>
-              <Input id="regNo" placeholder="e.g. 220301120045" required />
+          ) : (
+            <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm">
+              <Link to="/login" className="font-semibold text-primary hover:underline">Log in</Link>{" "}
+              <span className="text-muted-foreground">to join a club. Your membership is saved to your account.</span>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email *</Label>
-              <Input id="email" type="email" placeholder="name@muj.manipal.edu" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone *</Label>
-              <Input id="phone" type="tel" placeholder="+91 XXXXX XXXXX" required />
-            </div>
-          </div>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="year">Year of Study *</Label>
-              <Select required>
-                <SelectTrigger className="rounded-xl"><SelectValue placeholder="Select year" /></SelectTrigger>
+              <Select value={year} onValueChange={setYear} required>
+                <SelectTrigger id="year" className="rounded-xl"><SelectValue placeholder="Select year" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="1">1st Year</SelectItem>
                   <SelectItem value="2">2nd Year</SelectItem>
@@ -180,22 +181,12 @@ const JoinClub = () => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="branch">Branch / Program *</Label>
-              <Input id="branch" placeholder="e.g. B.Tech CSE, BBA, BA LLB" required />
+              <Input id="branch" value={branch} onChange={(e) => setBranch(e.target.value)} placeholder="e.g. B.Tech CSE, BBA, BA LLB" required />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="reason">Why do you want to join this club?</Label>
-            <Textarea id="reason" placeholder="Share your interest, skills, or past experience..." rows={3} />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="skills">Relevant Skills (optional)</Label>
-            <Input id="skills" placeholder="e.g. Python, Photography, Public Speaking" />
-          </div>
-
           <Button type="submit" className="w-full bg-hero-gradient text-primary-foreground rounded-xl h-11" disabled={loading}>
-            {loading ? "Redirecting…" : `Proceed to Payment · ₹${fee}`}
+            {loading ? "Redirecting…" : user ? `Proceed to Payment · ₹${fee}` : "Log in to Join"}
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">
