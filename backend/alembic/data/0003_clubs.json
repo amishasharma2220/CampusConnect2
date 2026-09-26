@@ -1,0 +1,822 @@
+[
+ {
+  "slug": "acm",
+  "name": "ACM MUJ Student Chapter",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Association for Computing Machinery — competitive programming, hackathons, and software development.",
+  "logo_url": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=100&h=100&fit=crop",
+  "members_count": 320
+ },
+ {
+  "slug": "acm-sigai",
+  "name": "ACM SIGAI",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Special Interest Group on Artificial Intelligence under ACM, focusing on AI/ML research and projects.",
+  "logo_url": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=100&h=100&fit=crop",
+  "members_count": 85
+ },
+ {
+  "slug": "aiml-community",
+  "name": "AIML Community",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Community for AI and Machine Learning enthusiasts to learn, build, and collaborate on projects.",
+  "logo_url": "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=100&h=100&fit=crop",
+  "members_count": 150
+ },
+ {
+  "slug": "gdsc",
+  "name": "Google Developer Student Club (GDSC) MUJ",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Learn Google technologies, build projects, and participate in Google Solution Challenges.",
+  "logo_url": "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=100&h=100&fit=crop",
+  "members_count": 400
+ },
+ {
+  "slug": "hash-define",
+  "name": "Hash Define",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Open-source contributions, coding bootcamps, and developer community events.",
+  "logo_url": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=100&h=100&fit=crop",
+  "members_count": 120
+ },
+ {
+  "slug": "enigma",
+  "name": "Enigma — The Coding Club",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Competitive programming contests, coding marathons, and algorithmic challenges.",
+  "logo_url": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=100&h=100&fit=crop",
+  "members_count": 200
+ },
+ {
+  "slug": "microsoft-learn",
+  "name": "Microsoft Learn Student Ambassadors",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Microsoft technologies, Azure cloud, and student developer community.",
+  "logo_url": "https://images.unsplash.com/photo-1633419461186-7d40a38105ec?w=100&h=100&fit=crop",
+  "members_count": 180
+ },
+ {
+  "slug": "linux-community",
+  "name": "Linux Community",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Open-source software, Linux OS, and free software advocacy.",
+  "logo_url": "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=100&h=100&fit=crop",
+  "members_count": 90
+ },
+ {
+  "slug": "owasp",
+  "name": "OWASP MUJ",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Open Web Application Security Project — web security, vulnerability analysis, and CTFs.",
+  "logo_url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=100&h=100&fit=crop",
+  "members_count": 75
+ },
+ {
+  "slug": "cyber-space",
+  "name": "Cyber Space",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Cybersecurity awareness, CTF competitions, ethical hacking workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=100&h=100&fit=crop",
+  "members_count": 110
+ },
+ {
+  "slug": "cypher-club",
+  "name": "Cypher Club",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Cryptography, security research, and competitive cybersecurity events.",
+  "logo_url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=100&h=100&fit=crop",
+  "members_count": 60
+ },
+ {
+  "slug": "blockchain-manipal",
+  "name": "Blockchain@Manipal",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Blockchain technology, Web3, cryptocurrency education, and decentralized app development.",
+  "logo_url": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=100&h=100&fit=crop",
+  "members_count": 95
+ },
+ {
+  "slug": "web3-club",
+  "name": "Web3 Club",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Decentralized web technologies, smart contracts, DeFi, and NFT development.",
+  "logo_url": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=100&h=100&fit=crop",
+  "members_count": 70
+ },
+ {
+  "slug": "the-product-space",
+  "name": "The Product Space",
+  "faculty": "FoSTA",
+  "department": "CSE",
+  "category": "Technical",
+  "description": "Product management, UX design, and startup product strategy workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=100&h=100&fit=crop",
+  "members_count": 85
+ },
+ {
+  "slug": "ieee-cs",
+  "name": "IEEE Computer Society MUJ",
+  "faculty": "FoSTA",
+  "department": "IT",
+  "category": "Professional",
+  "description": "Premier source for computer science events, coding challenges, and tech workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=100&h=100&fit=crop",
+  "members_count": 200
+ },
+ {
+  "slug": "wolframalpha",
+  "name": "Wolfram Student Club",
+  "faculty": "FoSTA",
+  "department": "IT",
+  "category": "Technical",
+  "description": "Computational thinking, Mathematica, and Wolfram Language workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=100&h=100&fit=crop",
+  "members_count": 40
+ },
+ {
+  "slug": "vector-shield",
+  "name": "Vector Shield",
+  "faculty": "FoSTA",
+  "department": "IT",
+  "category": "Technical",
+  "description": "Data science, analytics, and machine learning project development.",
+  "logo_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=100&h=100&fit=crop",
+  "members_count": 65
+ },
+ {
+  "slug": "mujcet",
+  "name": "MUJCET",
+  "faculty": "FoSTA",
+  "department": "IT",
+  "category": "Technical",
+  "description": "Competitive exam preparation and mentoring community for engineering students.",
+  "logo_url": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=100&h=100&fit=crop",
+  "members_count": 150
+ },
+ {
+  "slug": "ieee-muj",
+  "name": "IEEE MUJ Student Branch",
+  "faculty": "FoSTA",
+  "department": "ECE",
+  "category": "Professional",
+  "description": "IEEE technical paper presentations, project expos, and industry networking events.",
+  "logo_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&h=100&fit=crop",
+  "members_count": 250
+ },
+ {
+  "slug": "ieee-wie",
+  "name": "IEEE Women in Engineering",
+  "faculty": "FoSTA",
+  "department": "ECE",
+  "category": "Professional",
+  "description": "Empowering women in STEM through mentorship, workshops, and networking events.",
+  "logo_url": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=100&h=100&fit=crop",
+  "members_count": 120
+ },
+ {
+  "slug": "electronics-society",
+  "name": "Electronics Society",
+  "faculty": "FoSTA",
+  "department": "ECE",
+  "category": "Technical",
+  "description": "Electronics projects, IoT, embedded systems, and circuit design workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&h=100&fit=crop",
+  "members_count": 100
+ },
+ {
+  "slug": "iste",
+  "name": "ISTE MUJ",
+  "faculty": "FoSTA",
+  "department": "ECE",
+  "category": "Professional",
+  "description": "Indian Society for Technical Education — bridging academia and industry.",
+  "logo_url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=100&h=100&fit=crop",
+  "members_count": 180
+ },
+ {
+  "slug": "asme",
+  "name": "ASME MUJ",
+  "faculty": "FoSTA",
+  "department": "ME",
+  "category": "Professional",
+  "description": "American Society of Mechanical Engineers — workshops, competitions, and industry interactions.",
+  "logo_url": "https://images.unsplash.com/photo-1537462715-5dd35942df13?w=100&h=100&fit=crop",
+  "members_count": 150
+ },
+ {
+  "slug": "ashrae",
+  "name": "ASHRAE MUJ",
+  "faculty": "FoSTA",
+  "department": "ME",
+  "category": "Professional",
+  "description": "American Society of Heating, Refrigerating and Air-Conditioning Engineers student chapter.",
+  "logo_url": "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=100&h=100&fit=crop",
+  "members_count": 60
+ },
+ {
+  "slug": "sae",
+  "name": "SAE MUJ (Society of Automotive Engineers)",
+  "faculty": "FoSTA",
+  "department": "ME",
+  "category": "Professional",
+  "description": "Formula-style race car building, BAJA competitions, and automotive engineering.",
+  "logo_url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=100&h=100&fit=crop",
+  "members_count": 120
+ },
+ {
+  "slug": "cars",
+  "name": "CARS (Centre for Automotive Research)",
+  "faculty": "FoSTA",
+  "department": "ME",
+  "category": "Technical",
+  "description": "Automotive engineering — designing and building race cars for national competitions.",
+  "logo_url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=100&h=100&fit=crop",
+  "members_count": 80
+ },
+ {
+  "slug": "robocon",
+  "name": "Robocon MUJ",
+  "faculty": "FoSTA",
+  "department": "ME",
+  "category": "Technical",
+  "description": "ABU Robocon team — building robots for the Asia-Pacific Robot Contest.",
+  "logo_url": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=100&h=100&fit=crop",
+  "members_count": 100
+ },
+ {
+  "slug": "design-simulation-buro",
+  "name": "Design & Simulation Buro",
+  "faculty": "FoSTA",
+  "department": "ME",
+  "category": "Technical",
+  "description": "CAD/CAM design, simulation software, and engineering design competitions.",
+  "logo_url": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=100&h=100&fit=crop",
+  "members_count": 55
+ },
+ {
+  "slug": "the-tinkering-lab",
+  "name": "The Tinkering Lab",
+  "faculty": "FoSTA",
+  "department": "ME",
+  "category": "Technical",
+  "description": "Hands-on hardware projects, 3D printing, Arduino, and maker culture.",
+  "logo_url": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=100&h=100&fit=crop",
+  "members_count": 90
+ },
+ {
+  "slug": "iot-lab",
+  "name": "IoT Innovation Lab",
+  "faculty": "FoSTA",
+  "department": "IoT",
+  "category": "Technical",
+  "description": "Internet of Things projects, smart home prototyping, sensor networks, and edge computing workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&h=100&fit=crop",
+  "members_count": 75
+ },
+ {
+  "slug": "smart-campus-club",
+  "name": "Smart Campus Club",
+  "faculty": "FoSTA",
+  "department": "IoT",
+  "category": "Technical",
+  "description": "Building IoT solutions for campus automation — smart classrooms, energy monitoring, and connected infrastructure.",
+  "logo_url": "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=100&h=100&fit=crop",
+  "members_count": 50
+ },
+ {
+  "slug": "cce-innovators",
+  "name": "CCE Innovators Club",
+  "faculty": "FoSTA",
+  "department": "CCE",
+  "category": "Technical",
+  "description": "Communication engineering projects, 5G research, signal processing, and networking competitions.",
+  "logo_url": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop",
+  "members_count": 65
+ },
+ {
+  "slug": "signal-processing-club",
+  "name": "Signal Processing Club",
+  "faculty": "FoSTA",
+  "department": "CCE",
+  "category": "Technical",
+  "description": "DSP algorithms, image processing, radar systems, and real-time signal analysis workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&h=100&fit=crop",
+  "members_count": 40
+ },
+ {
+  "slug": "nirmaan",
+  "name": "Nirmaan — The Civil Engineering Club",
+  "faculty": "FoSTA",
+  "department": "CE",
+  "category": "Technical",
+  "description": "Civil engineering projects, structural design competitions, and site visits.",
+  "logo_url": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=100&h=100&fit=crop",
+  "members_count": 70
+ },
+ {
+  "slug": "autonomous-initiative",
+  "name": "Autonomous Initiative",
+  "faculty": "FoSTA",
+  "department": "EE",
+  "category": "Technical",
+  "description": "Autonomous vehicles and self-driving technology research club.",
+  "logo_url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=100&h=100&fit=crop",
+  "members_count": 45
+ },
+ {
+  "slug": "mist-robotics",
+  "name": "MIST Robotics",
+  "faculty": "FoSTA",
+  "department": "EE",
+  "category": "Technical",
+  "description": "Robotics research, drone building, and national robotics competitions.",
+  "logo_url": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=100&h=100&fit=crop",
+  "members_count": 80
+ },
+ {
+  "slug": "biotech-club",
+  "name": "Biotech Club",
+  "faculty": "FoSTA",
+  "department": "BT",
+  "category": "Technical",
+  "description": "Biotechnology research, lab experiments, and bio-innovation projects.",
+  "logo_url": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=100&h=100&fit=crop",
+  "members_count": 55
+ },
+ {
+  "slug": "eco-tech-empire",
+  "name": "Eco-Tech Empire",
+  "faculty": "FoSTA",
+  "department": "BT",
+  "category": "Social",
+  "description": "Sustainable technology, green energy projects, and environmental awareness initiatives.",
+  "logo_url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=100&h=100&fit=crop",
+  "members_count": 65
+ },
+ {
+  "slug": "de-artistry",
+  "name": "De Artistry Club",
+  "faculty": "FoSTA",
+  "department": "AP",
+  "category": "Cultural",
+  "description": "Visual arts, painting, sketching, digital art, and creative design workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=100&h=100&fit=crop",
+  "members_count": 75
+ },
+ {
+  "slug": "cosmos",
+  "name": "COSMOS — Astronomy Club",
+  "faculty": "FoSTA",
+  "department": "BSc",
+  "category": "Technical",
+  "description": "Stargazing events, astrophotography, telescope sessions, and astronomy lectures.",
+  "logo_url": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=100&h=100&fit=crop",
+  "members_count": 90
+ },
+ {
+  "slug": "abhigya",
+  "name": "Abhigya Club",
+  "faculty": "FoSTA",
+  "department": "BSc",
+  "category": "Technical",
+  "description": "Promotes innovation and technical knowledge among students through workshops and hackathons.",
+  "logo_url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&h=100&fit=crop",
+  "members_count": 60
+ },
+ {
+  "slug": "aperture",
+  "name": "Aperture — The Photography Club",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Media",
+  "description": "Captures campus life through photo walks, exhibitions, and photography workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=100&h=100&fit=crop",
+  "members_count": 130
+ },
+ {
+  "slug": "chess-society",
+  "name": "Chess Society",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Sports",
+  "description": "Chess tournaments, training sessions, and inter-college competitions.",
+  "logo_url": "https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=100&h=100&fit=crop",
+  "members_count": 80
+ },
+ {
+  "slug": "coreografia",
+  "name": "Coreografia",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Cultural",
+  "description": "The dance club of FoSTA — classical, contemporary, hip-hop, and fusion dance performances.",
+  "logo_url": "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=100&h=100&fit=crop",
+  "members_count": 100
+ },
+ {
+  "slug": "d-club",
+  "name": "D-Club (Debating Club)",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Literary",
+  "description": "Parliamentary debates, extempore, JAM sessions, and public speaking workshops.",
+  "logo_url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=100&h=100&fit=crop",
+  "members_count": 75
+ },
+ {
+  "slug": "foodoholics",
+  "name": "Foodoholics",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Cultural",
+  "description": "Food reviews, cooking competitions, and campus food culture events.",
+  "logo_url": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100&h=100&fit=crop",
+  "members_count": 120
+ },
+ {
+  "slug": "manipal-bikers-club",
+  "name": "Manipal Bikers Club",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Sports",
+  "description": "Motorcycle rides, road trips, and biking culture on campus.",
+  "logo_url": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=100&h=100&fit=crop",
+  "members_count": 50
+ },
+ {
+  "slug": "muj-central",
+  "name": "MUJ Central",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Media",
+  "description": "Campus media and content creation — news, videos, and social media coverage.",
+  "logo_url": "https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=100&h=100&fit=crop",
+  "members_count": 85
+ },
+ {
+  "slug": "prayatna",
+  "name": "Prayatna",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Social",
+  "description": "Social welfare initiatives, NGO collaborations, and community outreach programs.",
+  "logo_url": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=100&h=100&fit=crop",
+  "members_count": 100
+ },
+ {
+  "slug": "tedx-muj",
+  "name": "TEDxMUJ",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Literary",
+  "description": "Independently organized TEDx events bringing inspiring speakers to campus.",
+  "logo_url": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=100&h=100&fit=crop",
+  "members_count": 60
+ },
+ {
+  "slug": "volleyball-club-fosta",
+  "name": "Volleyball Club",
+  "faculty": "FoSTA",
+  "department": "FoSTA-General",
+  "category": "Sports",
+  "description": "Volleyball practice, tournaments, and inter-college championships.",
+  "logo_url": "https://images.unsplash.com/photo-1461896836934-bd45ba8c891c?w=100&h=100&fit=crop",
+  "members_count": 45
+ },
+ {
+  "slug": "e-cell",
+  "name": "E-Cell MUJ (Entrepreneurship Cell)",
+  "faculty": "FoMCA",
+  "department": "MBA",
+  "category": "Technical",
+  "description": "Startup culture, pitch competitions, speaker sessions, and founder meetups.",
+  "logo_url": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=100&h=100&fit=crop",
+  "members_count": 250
+ },
+ {
+  "slug": "entrepreneurship-club-fomca",
+  "name": "Entrepreneurship Club",
+  "faculty": "FoMCA",
+  "department": "MBA",
+  "category": "Technical",
+  "description": "Business plan development, startup mentorship, and B-plan competitions.",
+  "logo_url": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=100&h=100&fit=crop",
+  "members_count": 80
+ },
+ {
+  "slug": "finance-club",
+  "name": "Finance Club",
+  "faculty": "FoMCA",
+  "department": "MBA",
+  "category": "Professional",
+  "description": "Stock market sessions, financial literacy, investment workshops, and trading simulations.",
+  "logo_url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=100&h=100&fit=crop",
+  "members_count": 150
+ },
+ {
+  "slug": "marketing-club",
+  "name": "Marketing Club",
+  "faculty": "FoMCA",
+  "department": "MBA",
+  "category": "Professional",
+  "description": "Brand management case studies, marketing campaigns, and industry expert talks.",
+  "logo_url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop",
+  "members_count": 100
+ },
+ {
+  "slug": "enactus-muj",
+  "name": "Enactus MUJ",
+  "faculty": "FoMCA",
+  "department": "BCom",
+  "category": "Social",
+  "description": "Social entrepreneurship projects creating positive impact in local communities.",
+  "logo_url": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=100&h=100&fit=crop",
+  "members_count": 120
+ },
+ {
+  "slug": "rotaract-muj",
+  "name": "Rotaract Club MUJ",
+  "faculty": "FoMCA",
+  "department": "BCom",
+  "category": "Social",
+  "description": "Community service, leadership development, and international fellowship under Rotary.",
+  "logo_url": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=100&h=100&fit=crop",
+  "members_count": 100
+ },
+ {
+  "slug": "mun-society",
+  "name": "MUN Society",
+  "faculty": "FoMCA",
+  "department": "BA",
+  "category": "Literary",
+  "description": "Model United Nations conferences, diplomatic simulations, and policy debates.",
+  "logo_url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=100&h=100&fit=crop",
+  "members_count": 150
+ },
+ {
+  "slug": "litmus",
+  "name": "Litmus — Writing, Debating & MUN Society",
+  "faculty": "FoMCA",
+  "department": "BA",
+  "category": "Literary",
+  "description": "Debating, creative writing, MUN conferences, and literary discussions.",
+  "logo_url": "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=100&h=100&fit=crop",
+  "members_count": 90
+ },
+ {
+  "slug": "quizzing-club",
+  "name": "Quizzing Club",
+  "faculty": "FoMCA",
+  "department": "BA",
+  "category": "Literary",
+  "description": "Inter-college quizzes, trivia nights, and knowledge competitions.",
+  "logo_url": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=100&h=100&fit=crop",
+  "members_count": 70
+ },
+ {
+  "slug": "artistry-fomca",
+  "name": "Artistry Club (FoMCA)",
+  "faculty": "FoMCA",
+  "department": "FoMCA-General",
+  "category": "Cultural",
+  "description": "Creative arts, poster making, and cultural event decoration.",
+  "logo_url": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=100&h=100&fit=crop",
+  "members_count": 60
+ },
+ {
+  "slug": "media-club-fomca",
+  "name": "Media Club",
+  "faculty": "FoMCA",
+  "department": "FoMCA-General",
+  "category": "Media",
+  "description": "Campus journalism, newsletters, blogs, and media production.",
+  "logo_url": "https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=100&h=100&fit=crop",
+  "members_count": 55
+ },
+ {
+  "slug": "moot-court-society",
+  "name": "Moot Court Society",
+  "faculty": "FoL",
+  "department": "LLB",
+  "category": "Professional",
+  "description": "Moot court competitions, mock trials, and legal argumentation training.",
+  "logo_url": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=100&h=100&fit=crop",
+  "members_count": 80
+ },
+ {
+  "slug": "legal-aid-clinic",
+  "name": "Legal Aid Clinic",
+  "faculty": "FoL",
+  "department": "LLB",
+  "category": "Social",
+  "description": "Free legal assistance to underprivileged communities and legal awareness camps.",
+  "logo_url": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=100&h=100&fit=crop",
+  "members_count": 40
+ },
+ {
+  "slug": "parliamentary-debate-fol",
+  "name": "Parliamentary Debate Society",
+  "faculty": "FoL",
+  "department": "LLB",
+  "category": "Literary",
+  "description": "Parliamentary-style debates, rhetoric workshops, and inter-college debate championships.",
+  "logo_url": "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=100&h=100&fit=crop",
+  "members_count": 55
+ },
+ {
+  "slug": "law-review",
+  "name": "MUJ Law Review",
+  "faculty": "FoL",
+  "department": "LLB",
+  "category": "Literary",
+  "description": "Student-run legal journal publishing research papers and case commentaries.",
+  "logo_url": "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=100&h=100&fit=crop",
+  "members_count": 30
+ },
+ {
+  "slug": "pharma-club",
+  "name": "Pharma Club",
+  "faculty": "FoHS",
+  "department": "Pharm",
+  "category": "Technical",
+  "description": "Pharmaceutical research projects, drug discovery workshops, and pharma industry visits.",
+  "logo_url": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=100&h=100&fit=crop",
+  "members_count": 60
+ },
+ {
+  "slug": "health-awareness-club",
+  "name": "Health Awareness Club",
+  "faculty": "FoHS",
+  "department": "NAH",
+  "category": "Wellness",
+  "description": "Health camps, mental wellness sessions, first-aid training, and blood donation drives.",
+  "logo_url": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=100&h=100&fit=crop",
+  "members_count": 75
+ },
+ {
+  "slug": "yoga-wellness-club",
+  "name": "Yoga & Wellness Club",
+  "faculty": "FoHS",
+  "department": "NAH",
+  "category": "Wellness",
+  "description": "Daily yoga sessions, meditation workshops, and holistic wellness events.",
+  "logo_url": "https://images.unsplash.com/photo-1545389336-cf090694435e?w=100&h=100&fit=crop",
+  "members_count": 90
+ },
+ {
+  "slug": "cultural-committee",
+  "name": "Cultural Committee MUJ",
+  "faculty": "DSW",
+  "department": "Cultural",
+  "category": "Cultural",
+  "description": "Organizes Rang (annual cultural fest), concerts, dance competitions, and all cultural events on campus.",
+  "logo_url": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&h=100&fit=crop",
+  "members_count": 200
+ },
+ {
+  "slug": "drama-club",
+  "name": "Dramatics Club — Rangmanch",
+  "faculty": "DSW",
+  "department": "Cultural",
+  "category": "Cultural",
+  "description": "Theatre, street plays (nukkad natak), mono-acts, improv comedy, and annual drama festivals.",
+  "logo_url": "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=100&h=100&fit=crop",
+  "members_count": 80
+ },
+ {
+  "slug": "music-club",
+  "name": "Music Club — Sargam",
+  "faculty": "DSW",
+  "department": "Cultural",
+  "category": "Cultural",
+  "description": "Western and Indian music — band jams, open mics, classical recitals, and battle of bands.",
+  "logo_url": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=100&h=100&fit=crop",
+  "members_count": 120
+ },
+ {
+  "slug": "dance-club",
+  "name": "Dance Club — Footloose",
+  "faculty": "DSW",
+  "department": "Cultural",
+  "category": "Cultural",
+  "description": "Classical, contemporary, Bollywood, hip-hop, and fusion dance performances and competitions.",
+  "logo_url": "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=100&h=100&fit=crop",
+  "members_count": 100
+ },
+ {
+  "slug": "fine-arts-club",
+  "name": "Fine Arts Club",
+  "faculty": "DSW",
+  "department": "Cultural",
+  "category": "Cultural",
+  "description": "Painting, sculpture, pottery, rangoli, and visual arts exhibitions.",
+  "logo_url": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=100&h=100&fit=crop",
+  "members_count": 65
+ },
+ {
+  "slug": "sports-club",
+  "name": "Sports Club MUJ",
+  "faculty": "DSW",
+  "department": "Sports",
+  "category": "Sports",
+  "description": "Manages all inter-department and inter-university sports tournaments.",
+  "logo_url": "https://images.unsplash.com/photo-1461896836934-bd45ba8c891c?w=100&h=100&fit=crop",
+  "members_count": 300
+ },
+ {
+  "slug": "adventure-club",
+  "name": "Adventure Club",
+  "faculty": "DSW",
+  "department": "Sports",
+  "category": "Sports",
+  "description": "Trekking, rock climbing, camping trips, and outdoor adventure expeditions.",
+  "logo_url": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=100&h=100&fit=crop",
+  "members_count": 85
+ },
+ {
+  "slug": "nss-muj",
+  "name": "NSS MUJ (National Service Scheme)",
+  "faculty": "DSW",
+  "department": "Service",
+  "category": "Social",
+  "description": "Community service, village adoption, blood donation drives, and social impact projects.",
+  "logo_url": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=100&h=100&fit=crop",
+  "members_count": 250
+ },
+ {
+  "slug": "ncc-muj",
+  "name": "NCC MUJ (National Cadet Corps)",
+  "faculty": "DSW",
+  "department": "Service",
+  "category": "Social",
+  "description": "Military training, leadership camps, Republic Day parades, and adventure activities.",
+  "logo_url": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?w=100&h=100&fit=crop",
+  "members_count": 100
+ },
+ {
+  "slug": "social-outreach",
+  "name": "Social Outreach Cell",
+  "faculty": "DSW",
+  "department": "Service",
+  "category": "Social",
+  "description": "Campus drives for education, cleanliness, and environmental sustainability.",
+  "logo_url": "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=100&h=100&fit=crop",
+  "members_count": 80
+ },
+ {
+  "slug": "eco-club",
+  "name": "Eco Club — Green Campus",
+  "faculty": "DSW",
+  "department": "Service",
+  "category": "Social",
+  "description": "Tree plantation drives, plastic-free campaigns, sustainability workshops, and green audit.",
+  "logo_url": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=100&h=100&fit=crop",
+  "members_count": 70
+ },
+ {
+  "slug": "photography-club",
+  "name": "Photography Club MUJ",
+  "faculty": "DSW",
+  "department": "MW",
+  "category": "Media",
+  "description": "Campus photography, photo walks through Jaipur heritage sites, exhibitions, and contests.",
+  "logo_url": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=100&h=100&fit=crop",
+  "members_count": 110
+ },
+ {
+  "slug": "anti-ragging-committee",
+  "name": "Anti-Ragging Committee",
+  "faculty": "DSW",
+  "department": "MW",
+  "category": "Wellness",
+  "description": "Student safety, anti-ragging helpline, awareness campaigns, and mentoring freshers.",
+  "logo_url": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=100&h=100&fit=crop",
+  "members_count": 40
+ }
+]
