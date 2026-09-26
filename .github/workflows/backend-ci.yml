@@ -4,16 +4,38 @@ on:
   push:
   pull_request:
     branches: [main]
-  # Lets deploy.yml invoke this as a reusable workflow (uses: ./.github/workflows/backend-ci.yml)
   workflow_call:
 
 jobs:
-  test:
+  lint-and-test:
     name: Lint & Test (backend)
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: backend
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: campusconnect
+          POSTGRES_PASSWORD: campusconnect_local_pw
+          POSTGRES_DB: campusconnect
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U campusconnect -d campusconnect"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://campusconnect:campusconnect_local_pw@localhost:5432/campusconnect
+      JWT_SECRET_KEY: ci-test-secret-key-not-for-production
+      JWT_ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: "30"
+      REFRESH_TOKEN_EXPIRE_DAYS: "7"
+      ENVIRONMENT: test
 
     steps:
       - name: Checkout
@@ -30,19 +52,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          # ruff/pytest are pinned here rather than assumed to be in
-          # requirements.txt, since Phase 3 (tests) and Phase 5 (ruff
-          # config) may not have landed yet. Once requirements.txt lists
-          # them, this is just a fast no-op re-install.
-          pip install ruff pytest pytest-asyncio pytest-cov httpx
+          pip install ruff
 
-      - name: Run ruff (lint)
+      - name: Lint (ruff)
         run: ruff check .
 
-      - name: Run pytest
-        run: |
-          if [ -d "tests" ] && [ -n "$(find tests -name 'test_*.py' -print -quit)" ]; then
-            pytest --cov=app --cov-report=term-missing
-          else
-            echo "::notice::No tests found yet (backend/tests/ — Phase 3) — skipping pytest for now."
-          fi
+      - name: Run tests
+        run: pytest --cov=app --cov-report=term-missing
