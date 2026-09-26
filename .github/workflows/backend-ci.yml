@@ -57,5 +57,11 @@ jobs:
       - name: Lint (ruff)
         run: ruff check .
 
+      - name: Apply migrations to a fresh database
+        run: alembic upgrade head
+
+      - name: Check models and migrations are in sync
+        run: alembic check
+
       - name: Run tests
         run: pytest --cov=app --cov-report=term-missing
