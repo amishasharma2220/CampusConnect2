@@ -107,3 +107,11 @@ def test_health_ready_returns_503_when_database_is_down(client):
 def test_sentry_disabled_without_dsn(monkeypatch):
     monkeypatch.setattr(settings, "SENTRY_DSN", "")
     assert sentry_module.init_sentry() is False
+
+
+@pytest.mark.parametrize("path", ["/health", "/health/ready"])
+def test_health_checks_accept_head_requests(client, path):
+    # UptimeRobot and similar monitors use HEAD; GET-only routes return 405.
+    response = client.head(path)
+    assert response.status_code == 200
+    assert response.content == b""

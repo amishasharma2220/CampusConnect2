@@ -6,6 +6,9 @@ Health checks.
 - GET /health/ready  Readiness: also checks the database. Returns 503 when
                      the database can't be reached. Point Render's health
                      check and your uptime monitor here.
+
+Both accept HEAD as well as GET: uptime monitors such as UptimeRobot send
+HEAD requests, and a GET-only route would answer them with 405.
 """
 
 import logging
@@ -22,12 +25,12 @@ router = APIRouter(tags=["Health"])
 logger = logging.getLogger(__name__)
 
 
-@router.get("/health")
+@router.api_route("/health", methods=["GET", "HEAD"])
 def health():
     return {"status": "ok"}
 
 
-@router.get("/health/ready")
+@router.api_route("/health/ready", methods=["GET", "HEAD"])
 def health_ready(db: Session = Depends(get_db)):
     info = {
         "version": settings.APP_VERSION,
