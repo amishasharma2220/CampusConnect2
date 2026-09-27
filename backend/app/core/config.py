@@ -26,6 +26,17 @@ class Settings(BaseSettings):
     RAZORPAY_KEY_ID: str = ""
     RAZORPAY_KEY_SECRET: str = ""
 
+    # Observability
+    LOG_LEVEL: str = "INFO"
+    # "json" or "text". Empty = JSON when ENVIRONMENT is production/staging,
+    # human-readable text otherwise.
+    LOG_FORMAT: str = ""
+    # Error tracking is off unless a DSN is set (Render env var, never committed).
+    SENTRY_DSN: str = ""
+    SENTRY_TRACES_SAMPLE_RATE: float = 0.0
+    # Set automatically by Render on every deploy; used as the release name.
+    RENDER_GIT_COMMIT: str = ""
+
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
 
 
