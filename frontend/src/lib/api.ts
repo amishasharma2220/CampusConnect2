@@ -466,3 +466,40 @@ export const paymentsApi = {
       body: JSON.stringify(result),
     }, true),
 };
+
+// ── Club admin requests ──────────────────────────────────────
+export type RequestStatus = "pending" | "approved" | "rejected";
+
+export interface ClubAdminRequest {
+  id: string;
+  club_slug: string;
+  club_name: string;
+  position: string;
+  message: string | null;
+  status: RequestStatus;
+  admin_notes: string | null;
+  created_at: string;
+  reviewed_at: string | null;
+}
+
+export interface ClubAdminRequestForAdmin extends ClubAdminRequest {
+  user_id: string;
+  student_name: string;
+  student_email: string;
+  registration_number: string | null;
+}
+
+export const clubAdminRequestsApi = {
+  positions: () => request<string[]>("/club-admin-requests/positions"),
+
+  mine: () => request<ClubAdminRequest[]>("/club-admin-requests/mine", {}, true),
+
+  create: (data: { club_slug: string; position: string; message?: string }) =>
+    request<ClubAdminRequest>("/club-admin-requests", { method: "POST", body: JSON.stringify(data) }, true),
+
+  listForAdmin: (status: RequestStatus = "pending") =>
+    request<ClubAdminRequestForAdmin[]>(`/admin/club-admin-requests?status_filter=${status}`, {}, true),
+
+  review: (id: string, data: { status: "approved" | "rejected"; admin_notes?: string }) =>
+    request<ClubAdminRequest>(`/admin/club-admin-requests/${id}/review`, { method: "POST", body: JSON.stringify(data) }, true),
+};

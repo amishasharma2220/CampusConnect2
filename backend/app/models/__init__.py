@@ -1,6 +1,7 @@
 from app.models.budget import ClubBudget
 from app.models.calendar import AcademicCalendar
 from app.models.club import Club, ClubMember
+from app.models.club_admin_request import ClubAdminRequest
 from app.models.event import (
     Attendance,
     Certificate,
@@ -23,6 +24,7 @@ __all__ = [
     "Attendance",
     "Certificate",
     "Club",
+    "ClubAdminRequest",
     "ClubBudget",
     "ClubMember",
     "EmailVerification",

@@ -19,6 +19,7 @@ from app.models.event import (
 )
 from app.models.profile import Profile
 from app.models.user import User, UserRole
+from app.services.roles import set_role
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
 logger = logging.getLogger(__name__)
@@ -210,14 +211,7 @@ def change_user_role(
         if not club:
             raise HTTPException(status_code=404, detail="Club not found.")
 
-    # A user manages at most one club: release any club they managed before.
-    for managed in db.query(Club).filter(Club.admin_user_id == user.id).all():
-        if club is None or managed.id != club.id:
-            managed.admin_user_id = None
-
-    user.role = UserRole(data.role)
-    if club is not None:
-        club.admin_user_id = user.id
+    set_role(db, user, UserRole(data.role), club)
     db.commit()
     logger.info("Role changed", extra={"target_user": str(user.id), "new_role": data.role, "club": data.club_slug, "by": str(admin.id)})
     return {"id": str(user.id), "email": user.email, "role": user.role.value, "club_slug": club.slug if club else None}

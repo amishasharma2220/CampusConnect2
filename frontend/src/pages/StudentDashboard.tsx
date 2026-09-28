@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { LayoutDashboard, Calendar, CalendarCheck, Award, UserCircle, Search, MapPin } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import StatsCard from "@/components/dashboard/StatsCard";
+import ClubAdminRequestCard from "@/components/dashboard/ClubAdminRequestCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -65,6 +66,8 @@ const StudentDashboard = () => {
           <StatsCard title="Branch" value={user?.branch || "—"} icon={<UserCircle className="w-5 h-5" />} />
           <StatsCard title="Year" value={user?.year_of_study || "—"} icon={<CalendarCheck className="w-5 h-5" />} />
         </div>
+
+        {user?.role === "student" && <ClubAdminRequestCard />}
 
         {registered.length > 0 && (
           <div>
