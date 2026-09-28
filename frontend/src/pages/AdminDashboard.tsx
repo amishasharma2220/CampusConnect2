@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { eventsApi, adminApi, AdminStats, AdminEvent, AdminStudent, AdminClub, Proposal } from "@/lib/api";
+import ClubAdminRequestsPanel from "@/components/admin/ClubAdminRequestsPanel";
+import { clubAdminRequestsApi, eventsApi, adminApi, AdminStats, AdminEvent, AdminStudent, AdminClub, Proposal } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
-type Tab = "overview" | "approvals" | "events" | "clubs" | "students";
+type Tab = "overview" | "approvals" | "requests" | "events" | "clubs" | "students";
 
 const FACULTIES = ["All", "FoSTA", "FoMCA", "FoL", "FoHS", "DSW"];
 
@@ -29,6 +30,7 @@ const AdminDashboard = () => {
   const [facultyFilter, setFacultyFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("all");
   const [promoteClub, setPromoteClub] = useState<Record<string, string>>({});
+  const [requestCount, setRequestCount] = useState(0);
 
   useEffect(() => {
     Promise.all([
@@ -38,6 +40,7 @@ const AdminDashboard = () => {
       setStats(s);
       setProposals(p);
     }).catch(() => {}).finally(() => setLoading(false));
+    clubAdminRequestsApi.listForAdmin("pending").then(r => setRequestCount(r.length)).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -90,6 +93,7 @@ const AdminDashboard = () => {
   const tabs: { key: Tab; label: string; count?: number }[] = [
     { key: "overview", label: "Overview" },
     { key: "approvals", label: "Event Approvals", count: pending.length },
+    { key: "requests", label: "Club Admin Requests", count: requestCount },
     { key: "events", label: "All Events" },
     { key: "clubs", label: "All Clubs" },
     { key: "students", label: "Students" },
@@ -315,6 +319,9 @@ const AdminDashboard = () => {
             )}
           </section>
         )}
+
+        {/* ── CLUB ADMIN REQUESTS ──────────────────────────────────── */}
+        {tab === "requests" && <ClubAdminRequestsPanel onCountChange={setRequestCount} />}
 
         {/* ── ALL EVENTS ───────────────────────────────────────────── */}
         {tab === "events" && (
