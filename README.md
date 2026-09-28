@@ -5,7 +5,7 @@
 [![Backend CI](https://github.com/amishasharma2220/CampusConnect2/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/amishasharma2220/CampusConnect2/actions/workflows/backend-ci.yml)
 [![Frontend CI](https://github.com/amishasharma2220/CampusConnect2/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/amishasharma2220/CampusConnect2/actions/workflows/frontend-ci.yml)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-56%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-66%20passing-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-87%25-brightgreen)
 
 **Live Demo:** [campus-connect2-alpha.vercel.app](https://campus-connect2-alpha.vercel.app)  
@@ -92,7 +92,7 @@ flowchart LR
 - **Deploy**: pushes to `main` trigger the Render deploy hook **only after both CI jobs pass**; Vercel deploys the frontend.
 
 ### Testing
-- **56 pytest tests, 87% coverage**, run against a real PostgreSQL database (not SQLite), so PostgreSQL enums, UUIDs and constraints behave exactly as in production.
+- **66 pytest tests, 87% coverage**, run against a real PostgreSQL database (not SQLite), so PostgreSQL enums, UUIDs and constraints behave exactly as in production.
 - Each test runs inside a transaction that is rolled back afterwards, so tests never leave data behind and can run against a seeded dev database.
 - Covers auth, events, admin, payments (with signatures computed exactly as Razorpay does), security rules and observability.
 
