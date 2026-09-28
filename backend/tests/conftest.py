@@ -49,6 +49,16 @@ def _create_tables():
     yield
 
 
+@pytest.fixture(autouse=True)
+def _reset_rate_limits():
+    # Rate-limit counters are in memory; start every test with a clean slate.
+    from app.core.rate_limit import limiter
+
+    limiter.reset()
+    yield
+    limiter.reset()
+
+
 @pytest.fixture()
 def db():
     connection = engine.connect()

@@ -28,6 +28,7 @@ const AdminDashboard = () => {
   const [search, setSearch] = useState("");
   const [facultyFilter, setFacultyFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [promoteClub, setPromoteClub] = useState<Record<string, string>>({});
 
   useEffect(() => {
     Promise.all([
@@ -46,7 +47,7 @@ const AdminDashboard = () => {
     if (tab === "students" && students.length === 0) {
       adminApi.getStudents().then(setStudents).catch(() => {});
     }
-    if (tab === "clubs" && clubs.length === 0) {
+    if ((tab === "clubs" || tab === "students") && clubs.length === 0) {
       adminApi.getClubs().then(setClubs).catch(() => {});
     }
   }, [tab, events.length, students.length, clubs.length]);
@@ -60,6 +61,25 @@ const AdminDashboard = () => {
       toast({ title: status === "approved" ? "Event approved!" : "Event rejected", description: status === "approved" ? "Now live for students." : "Club admin will be notified." });
     } catch (err: unknown) {
       toast({ title: "Action failed", description: getErrorMessage(err), variant: "destructive" });
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handlePromote = async (student: AdminStudent) => {
+    const clubSlug = promoteClub[student.id];
+    if (!clubSlug) {
+      toast({ title: "Choose a club", description: "Pick the club this student will manage.", variant: "destructive" });
+      return;
+    }
+    setActionLoading("promote" + student.id);
+    try {
+      await adminApi.setUserRole(student.id, "club_admin", clubSlug);
+      setStudents(prev => prev.filter(s => s.id !== student.id));
+      const clubName = clubs.find(c => c.slug === clubSlug)?.name ?? clubSlug;
+      toast({ title: "Club admin access granted", description: `${student.full_name} now manages ${clubName}. They'll see it next time they log in.` });
+    } catch (err: unknown) {
+      toast({ title: "Couldn't change role", description: getErrorMessage(err), variant: "destructive" });
     } finally {
       setActionLoading(null);
     }
@@ -439,6 +459,7 @@ const AdminDashboard = () => {
                         <th className="text-left p-3 font-semibold text-foreground">Year</th>
                         <th className="text-left p-3 font-semibold text-foreground">Events</th>
                         <th className="text-left p-3 font-semibold text-foreground">Joined</th>
+                        <th className="text-left p-3 font-semibold text-foreground">Make club admin</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -464,6 +485,24 @@ const AdminDashboard = () => {
                             <Badge variant={s.events_registered > 0 ? "default" : "outline"} className="text-xs">{s.events_registered} events</Badge>
                           </td>
                           <td className="p-3 text-muted-foreground text-xs">{new Date(s.created_at).toLocaleDateString("en-IN")}</td>
+                          <td className="p-3">
+                            <div className="flex items-center gap-2">
+                              <select
+                                aria-label={`Club for ${s.full_name}`}
+                                value={promoteClub[s.id] ?? ""}
+                                onChange={e => setPromoteClub(prev => ({ ...prev, [s.id]: e.target.value }))}
+                                className="h-8 max-w-[11rem] rounded-lg border border-border bg-background px-2 text-xs"
+                              >
+                                <option value="">Select club…</option>
+                                {clubs.map(c => <option key={c.slug} value={c.slug}>{c.name}</option>)}
+                              </select>
+                              <Button size="sm" variant="outline" className="h-8 text-xs"
+                                disabled={actionLoading === "promote" + s.id}
+                                onClick={() => handlePromote(s)}>
+                                {actionLoading === "promote" + s.id ? "Saving…" : "Grant"}
+                              </Button>
+                            </div>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

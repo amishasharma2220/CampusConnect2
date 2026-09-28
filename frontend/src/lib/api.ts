@@ -390,6 +390,11 @@ export const adminApi = {
     return request<AdminEvent[]>(`/admin/events${qs}`, {}, true);
   },
   getStudents: () => request<AdminStudent[]>("/admin/students", {}, true),
+  setUserRole: (userId: string, role: "student" | "club_admin", clubSlug?: string) =>
+    request<{ id: string; email: string; role: string; club_slug: string | null }>(`/admin/users/${userId}/role`, {
+      method: "PATCH",
+      body: JSON.stringify({ role, club_slug: clubSlug || null }),
+    }, true),
   getClubs: (faculty?: string) => {
     const qs = faculty ? `?faculty=${faculty}` : "";
     return request<AdminClub[]>(`/admin/clubs${qs}`, {}, true);

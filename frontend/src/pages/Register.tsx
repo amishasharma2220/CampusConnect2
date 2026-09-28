@@ -4,38 +4,19 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Hash, GraduationCap, Shield, Users } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Hash, GraduationCap } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 
-type Role = "student" | "club_admin" | "university_admin";
-
 const STUDENT_EMAIL = /^[a-zA-Z0-9._%+-]+@muj\.manipal\.edu$/;
-const FACULTY_EMAIL = /^[a-zA-Z0-9._%+-]+@jaipur\.manipal\.edu$/;
 
-const validateEmailForRole = (email: string, role: Role): string | null => {
-  const value = email.trim().toLowerCase();
-  if (role === "student" && !STUDENT_EMAIL.test(value))
-    return "Students must register with their official MUJ ID (e.g. name.regno@muj.manipal.edu).";
-  if (role === "university_admin" && !FACULTY_EMAIL.test(value))
-    return "University admins must use their faculty email (e.g. firstname.lastname@jaipur.manipal.edu).";
-  if (role === "club_admin" && !STUDENT_EMAIL.test(value) && !FACULTY_EMAIL.test(value))
-    return "Club admins must use an official MUJ email (@muj.manipal.edu or @jaipur.manipal.edu).";
-  return null;
-};
-
-const roleOptions: { key: Role; label: string; desc: string; icon: React.ReactNode }[] = [
-  { key: "student", label: "Student", desc: "Browse & join events", icon: <GraduationCap className="w-5 h-5" /> },
-  { key: "club_admin", label: "Club Admin", desc: "Organize events", icon: <Users className="w-5 h-5" /> },
-  { key: "university_admin", label: "University Admin", desc: "Faculty / Dean", icon: <Shield className="w-5 h-5" /> },
-];
-
+// Everyone signs up as a student. Club admin and university admin roles are
+// granted later by a university admin; the server enforces this too.
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedRole, setSelectedRole] = useState<Role>("student");
   const { toast } = useToast();
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -48,16 +29,15 @@ const Register = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const placeholderEmail = selectedRole === "university_admin"
-    ? "firstname.lastname@jaipur.manipal.edu"
-    : "name.regno@muj.manipal.edu";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const emailError = validateEmailForRole(form.email, selectedRole);
-    if (emailError) { toast({ title: "Invalid university email", description: emailError, variant: "destructive" }); return; }
+    if (!STUDENT_EMAIL.test(form.email.trim().toLowerCase())) {
+      toast({ title: "Invalid university email", description: "Register with your official MUJ ID (e.g. name.regno@muj.manipal.edu).", variant: "destructive" });
+      return;
+    }
     if (form.password !== form.confirmPassword) { toast({ title: "Passwords don't match", variant: "destructive" }); return; }
-    if (form.password.length < 6) { toast({ title: "Password too short", description: "Minimum 6 characters.", variant: "destructive" }); return; }
+    if (form.password.length < 8) { toast({ title: "Password too short", description: "Minimum 8 characters.", variant: "destructive" }); return; }
 
     setIsLoading(true);
     try {
@@ -65,13 +45,10 @@ const Register = () => {
         email: form.email.trim().toLowerCase(),
         password: form.password,
         full_name: form.fullName,
-        role: selectedRole,
-        registration_number: selectedRole === "student" ? form.registrationNumber : undefined,
+        registration_number: form.registrationNumber,
       });
       toast({ title: "Account created!", description: "Welcome to CampusConnect." });
-      if (selectedRole === "university_admin") navigate("/university-admin");
-      else if (selectedRole === "club_admin") navigate("/club/dashboard");
-      else navigate("/student/dashboard");
+      navigate("/student/dashboard");
     } catch (err: unknown) {
       toast({ title: "Registration failed", description: getErrorMessage(err), variant: "destructive" });
     } finally {
@@ -135,21 +112,9 @@ const Register = () => {
           <h2 className="font-display text-3xl font-bold text-foreground mb-2">Create Account</h2>
           <p className="text-muted-foreground mb-8">Use your official MUJ email to register</p>
 
-          <div className="mb-6">
-            <Label className="text-sm font-medium text-foreground mb-3 block">I am a</Label>
-            <div className="grid grid-cols-3 gap-2">
-              {roleOptions.map((r) => (
-                <button key={r.key} type="button" onClick={() => setSelectedRole(r.key)}
-                  className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all text-center ${
-                    selectedRole === r.key ? "border-primary bg-primary/5 text-primary" : "border-border bg-card text-muted-foreground hover:border-primary/30"
-                  }`}>
-                  {r.icon}
-                  <span className="text-xs font-semibold">{r.label}</span>
-                  <span className="text-[10px] opacity-70 leading-tight">{r.desc}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          <p className="text-xs text-muted-foreground -mt-4 mb-6">
+            Club admins and faculty: sign up here too. A university admin will grant your admin access.
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -162,37 +127,33 @@ const Register = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">{selectedRole === "university_admin" ? "Faculty Email" : "University Email"}</Label>
+              <Label htmlFor="email">University Email</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input id="email" name="email" type="email" placeholder={placeholderEmail} value={form.email}
+                <Input id="email" name="email" type="email" placeholder="name.regno@muj.manipal.edu" value={form.email}
                   onChange={handleChange} required className="pl-10 h-12 rounded-xl border-border bg-card" />
               </div>
               <p className="text-xs text-muted-foreground">
-                {selectedRole === "university_admin" ? "Only @jaipur.manipal.edu addresses are accepted."
-                  : selectedRole === "club_admin" ? "Accepts @muj.manipal.edu or @jaipur.manipal.edu."
-                  : "Only @muj.manipal.edu addresses are accepted."}
+                Only @muj.manipal.edu addresses are accepted.
               </p>
             </div>
 
-            {selectedRole === "student" && (
-              <div className="space-y-2">
-                <Label htmlFor="registrationNumber">Registration Number</Label>
-                <div className="relative">
-                  <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="registrationNumber" name="registrationNumber" placeholder="e.g. 239301120045"
-                    value={form.registrationNumber} onChange={handleChange} required
-                    className="pl-10 h-12 rounded-xl border-border bg-card" />
-                </div>
+            <div className="space-y-2">
+              <Label htmlFor="registrationNumber">Registration Number</Label>
+              <div className="relative">
+                <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input id="registrationNumber" name="registrationNumber" placeholder="e.g. 239301120045"
+                  value={form.registrationNumber} onChange={handleChange} required
+                  className="pl-10 h-12 rounded-xl border-border bg-card" />
               </div>
-            )}
+            </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input id="password" name="password" type={showPassword ? "text" : "password"}
-                  placeholder="Min 6 characters" value={form.password} onChange={handleChange} required
+                  placeholder="Min 8 characters" value={form.password} onChange={handleChange} required
                   className="pl-10 pr-10 h-12 rounded-xl border-border bg-card" />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">

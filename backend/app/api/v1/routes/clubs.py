@@ -2,7 +2,7 @@
 from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
-from app.core.security import decode_token
+from app.core.security import decode_access_token
 from app.db.session import get_db
 from app.models.club import Club, ClubMember
 from app.models.profile import Profile
@@ -15,11 +15,11 @@ def get_current_user(authorization: str | None, db: Session):
     if not authorization or not authorization.startswith("Bearer "):
         return None
     token = authorization.split(" ")[1]
-    payload = decode_token(token)
+    payload = decode_access_token(token)
     if not payload:
         return None
     from app.models.user import User
-    return db.query(User).filter(User.id == payload["sub"]).first()
+    return db.query(User).filter(User.id == payload["sub"], User.is_active).first()
 
 
 def require_user(authorization: str | None, db: Session):
