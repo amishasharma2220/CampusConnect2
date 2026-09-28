@@ -70,6 +70,8 @@ const Payment = () => {
   }
 
   const { meta } = payment;
+  // Only ever return to a path inside this app (defence against open redirects).
+  const returnTo = /^\/(?![/\\])/.test(payment.returnTo) ? payment.returnTo : "/join-club";
 
   const startPayment = async () => {
     setBusy(true);
@@ -90,7 +92,7 @@ const Payment = () => {
         handler: async (result) => {
           try {
             const verified = await paymentsApi.verify({ ...result, year: meta.year, branch: meta.branch });
-            navigate(payment.returnTo, { state: { paid: true, txnId: verified.payment_id, meta } });
+            navigate(returnTo, { state: { paid: true, txnId: verified.payment_id, meta } });
           } catch (err: unknown) {
             toast({ title: "Payment received but not confirmed", description: getErrorMessage(err), variant: "destructive" });
             setBusy(false);
@@ -111,7 +113,7 @@ const Payment = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-10 max-w-lg">
-        <Link to={payment.returnTo} className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-6">
+        <Link to={returnTo} className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mb-6">
           <ArrowLeft className="w-4 h-4" /> Back
         </Link>
 

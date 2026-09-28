@@ -1,16 +1,19 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.models.user import UserRole
 
 
 class RegisterRequest(BaseModel):
+    # No `role` field: everyone signs up as a student. Admin roles are only
+    # granted by a university admin (or the make_admin script). Any "role"
+    # sent by a client is ignored.
     email: EmailStr
-    password: str
-    full_name: str
-    role: UserRole = UserRole.student
+    # bcrypt only uses the first 72 bytes, so cap the length there.
+    password: str = Field(min_length=8, max_length=72)
+    full_name: str = Field(min_length=1, max_length=100)
     registration_number: str | None = None
     branch: str | None = None
     year_of_study: str | None = None

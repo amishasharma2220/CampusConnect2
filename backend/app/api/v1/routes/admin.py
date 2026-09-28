@@ -1,9 +1,14 @@
 
+import logging
+from typing import Literal
+from uuid import UUID
+
 from fastapi import APIRouter, Depends, Header, HTTPException
+from pydantic import BaseModel
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from app.core.security import decode_token
+from app.core.security import decode_access_token
 from app.db.session import get_db
 from app.models.club import Club
 from app.models.event import (
@@ -16,17 +21,27 @@ from app.models.profile import Profile
 from app.models.user import User, UserRole
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
+logger = logging.getLogger(__name__)
+
+
+class RoleChangeRequest(BaseModel):
+    # university_admin is deliberately not allowed here: those accounts are
+    # created only with `python -m app.scripts.make_admin`.
+    role: Literal["student", "club_admin"]
+    club_slug: str | None = None  # club this user will manage (club_admin only)
 
 
 def require_admin(authorization: str | None, db: Session):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authentication required.")
     token = authorization.split(" ")[1]
-    payload = decode_token(token)
+    payload = decode_access_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token.")
-    user = db.query(User).filter(User.id == payload["sub"]).first()
-    if not user or user.role != UserRole.university_admin:
+    user = db.query(User).filter(User.id == payload["sub"], User.is_active).first()
+    if not user:
+        raise HTTPException(status_code=401, detail="Authentication required.")
+    if user.role != UserRole.university_admin:
         raise HTTPException(status_code=403, detail="University admin access required.")
     return user
 
@@ -170,3 +185,39 @@ def get_all_clubs_admin(
         "is_active": c.is_active,
         "description": c.description,
     } for c in clubs]
+
+
+# ── PATCH /admin/users/{user_id}/role ─────────────────────────────────────────
+@router.patch("/users/{user_id}/role")
+def change_user_role(
+    user_id: UUID,
+    data: RoleChangeRequest,
+    db: Session = Depends(get_db),
+    authorization: str | None = Header(None),
+):
+    admin = require_admin(authorization, db)
+    if user_id == admin.id:
+        raise HTTPException(status_code=400, detail="You can't change your own role.")
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    if user.role == UserRole.university_admin:
+        raise HTTPException(status_code=403, detail="University admin accounts can't be changed here.")
+
+    club = None
+    if data.role == "club_admin" and data.club_slug:
+        club = db.query(Club).filter(Club.slug == data.club_slug).first()
+        if not club:
+            raise HTTPException(status_code=404, detail="Club not found.")
+
+    # A user manages at most one club: release any club they managed before.
+    for managed in db.query(Club).filter(Club.admin_user_id == user.id).all():
+        if club is None or managed.id != club.id:
+            managed.admin_user_id = None
+
+    user.role = UserRole(data.role)
+    if club is not None:
+        club.admin_user_id = user.id
+    db.commit()
+    logger.info("Role changed", extra={"target_user": str(user.id), "new_role": data.role, "club": data.club_slug, "by": str(admin.id)})
+    return {"id": str(user.id), "email": user.email, "role": user.role.value, "club_slug": club.slug if club else None}

@@ -18,8 +18,16 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    # CORS
+    # CORS: only these browser origins may call the API. Comma-separated.
+    # FRONTEND_URL is always included too.
     FRONTEND_URL: str = "http://localhost:5173"
+    CORS_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173,https://campus-connect2-alpha.vercel.app"
+
+    # Security
+    # Comma-separated email domains allowed to self-register (as students).
+    ALLOWED_SIGNUP_DOMAINS: str = "muj.manipal.edu"
+    # Set to false only in tests.
+    RATE_LIMIT_ENABLED: bool = True
 
     # Razorpay (use rzp_test_... keys outside production). Empty = payments
     # disabled: the order endpoint returns 503 instead of crashing.
@@ -38,6 +46,18 @@ class Settings(BaseSettings):
     RENDER_GIT_COMMIT: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
+
+
+    @property
+    def cors_origins(self) -> list[str]:
+        origins = [o.strip().rstrip("/") for o in self.CORS_ORIGINS.split(",") if o.strip()]
+        if self.FRONTEND_URL.strip():
+            origins.append(self.FRONTEND_URL.strip().rstrip("/"))
+        return sorted(set(origins))
+
+    @property
+    def is_production(self) -> bool:
+        return self.ENVIRONMENT.lower() == "production"
 
 
 settings = Settings()

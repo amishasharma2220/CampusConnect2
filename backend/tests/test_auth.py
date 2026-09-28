@@ -16,7 +16,7 @@ def test_register_student_success(client):
     response = client.post(
         "/api/v1/auth/register",
         json={
-            "email": "newstudent@test.campusconnect-test.dev",
+            "email": "newstudent@muj.manipal.edu",
             "password": "SecurePass123!",
             "full_name": "New Student",
         },
@@ -29,15 +29,10 @@ def test_register_student_success(client):
     assert body["full_name"] == "New Student"
 
 
-def test_register_duplicate_email_fails(client, student_user):
-    response = client.post(
-        "/api/v1/auth/register",
-        json={
-            "email": student_user.email,
-            "password": "AnotherPass123!",
-            "full_name": "Duplicate Attempt",
-        },
-    )
+def test_register_duplicate_email_fails(client):
+    payload = {"email": "twice@muj.manipal.edu", "password": "AnotherPass123!", "full_name": "First"}
+    assert client.post("/api/v1/auth/register", json=payload).status_code == 201
+    response = client.post("/api/v1/auth/register", json={**payload, "full_name": "Duplicate Attempt"})
     assert response.status_code == 409
 
 

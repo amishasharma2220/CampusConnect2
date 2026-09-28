@@ -1,6 +1,6 @@
 from datetime import UTC, datetime, timedelta
 
-from jose import JWTError, jwt
+import jwt
 from passlib.context import CryptContext
 
 from app.core.config import settings
@@ -30,8 +30,16 @@ def create_refresh_token(subject: str | int) -> str:
     return jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
 
 
+def decode_access_token(token: str) -> dict | None:
+    """Decode a token only if it is an *access* token (never a refresh token)."""
+    payload = decode_token(token)
+    if not payload or payload.get("type") != "access":
+        return None
+    return payload
+
+
 def decode_token(token: str) -> dict | None:
     try:
         return jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
-    except JWTError:
+    except jwt.PyJWTError:
         return None

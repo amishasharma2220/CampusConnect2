@@ -53,8 +53,8 @@ const StudentProfile = () => {
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       toast({ title: "Passwords don't match", variant: "destructive" }); return;
     }
-    if (passwordForm.newPassword.length < 6) {
-      toast({ title: "Password too short", description: "Min 6 characters.", variant: "destructive" }); return;
+    if (passwordForm.newPassword.length < 8) {
+      toast({ title: "Password too short", description: "Min 8 characters.", variant: "destructive" }); return;
     }
     toast({ title: "Password change coming soon", description: "This feature will be available after deployment." });
     setPasswordForm({ newPassword: "", confirmPassword: "" });

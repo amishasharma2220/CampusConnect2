@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from app.core.security import decode_token
+from app.core.security import decode_access_token
 from app.db.session import get_db
 from app.models.budget import BudgetCategory, BudgetType, ClubBudget
 from app.models.club import Club, ClubMember
@@ -27,13 +27,13 @@ def get_admin_user(authorization: str | None, db: Session):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authentication required.")
     token = authorization.split(" ")[1]
-    payload = decode_token(token)
+    payload = decode_access_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token.")
     from app.models.user import User
-    user = db.query(User).filter(User.id == payload["sub"]).first()
+    user = db.query(User).filter(User.id == payload["sub"], User.is_active).first()
     if not user:
-        raise HTTPException(status_code=404, detail="User not found.")
+        raise HTTPException(status_code=401, detail="Authentication required.")
     if user.role.value not in ["club_admin", "university_admin"]:
         raise HTTPException(status_code=403, detail="Club admin access required.")
     return user

@@ -14,7 +14,7 @@ from app.core.security import (
 )
 from app.models.profile import Profile
 from app.models.user import Session as UserSession
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.schemas.user import LoginRequest, RegisterRequest
 
 
@@ -26,14 +26,22 @@ def get_user_by_id(db: Session, user_id: str) -> User | None:
     return db.query(User).filter(User.id == user_id).first()
 
 
+def _signup_domain_allowed(email: str) -> bool:
+    allowed = {d.strip().lower() for d in settings.ALLOWED_SIGNUP_DOMAINS.split(",") if d.strip()}
+    return not allowed or email.rsplit("@", 1)[-1].lower() in allowed
+
+
 def create_user(db: Session, data: RegisterRequest) -> User:
+    if not _signup_domain_allowed(data.email):
+        domains = ", ".join(f"@{d.strip()}" for d in settings.ALLOWED_SIGNUP_DOMAINS.split(",") if d.strip())
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Please sign up with your university email ({domains}).")
     if get_user_by_email(db, data.email):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="An account with this email already exists.")
 
     user = User(
         email=data.email.lower(),
         password_hash=hash_password(data.password),
-        role=data.role,
+        role=UserRole.student,  # never taken from the request
         is_verified=False,
         is_active=True,
     )
@@ -106,7 +114,7 @@ def refresh_access_token(db: Session, refresh_token: str) -> dict:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Session expired. Please log in again.")
 
     user = get_user_by_id(db, payload["sub"])
-    if not user:
+    if not user or not user.is_active:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
 
     db.delete(session)
