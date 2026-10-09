@@ -9,6 +9,7 @@
 ![Coverage](https://img.shields.io/badge/coverage-87%25-brightgreen)
 
 **Live Demo:** [campus-connect2-alpha.vercel.app](https://campus-connect2-alpha.vercel.app)  
+**Android App:** [Download APK](https://expo.dev/accounts/amisha2220/projects/campusconnect/builds/446d32ca-aa6d-4cb5-b35b-7e9c6195d9ed)  
 **API Docs:** [campusconnect-api-p6ql.onrender.com/api/docs](https://campusconnect-api-p6ql.onrender.com/api/docs)  
 **Health:** [campusconnect-api-p6ql.onrender.com/health/ready](https://campusconnect-api-p6ql.onrender.com/health/ready)
 
@@ -49,11 +50,41 @@ CampusConnect replaces the fragmented WhatsApp groups, Instagram pages, and word
 
 ---
 
+## Mobile App
+
+A native **React Native (Expo)** app for students, built on the same FastAPI backend as the web app. Source: [`mobile/`](mobile/).
+
+<p align="center">
+  <img src="mobile/docs/screenshots/sign-in.png" width="160" alt="Sign in" />
+  <img src="mobile/docs/screenshots/home.png" width="160" alt="Home" />
+  <img src="mobile/docs/screenshots/events.png" width="160" alt="Events" />
+  <img src="mobile/docs/screenshots/clubs.png" width="160" alt="Clubs" />
+  <img src="mobile/docs/screenshots/profile.png" width="160" alt="Profile" />
+</p>
+
+- Sign in / sign up with JWT access + refresh tokens stored in the device Keychain/Keystore (`expo-secure-store`), with automatic token refresh
+- Home feed with your next registered event, quick stats and upcoming events
+- Search and filter events by time and category; event details with live capacity and one-tap registration
+- Browse all 82 clubs, view leadership and club events, and **join with Razorpay** (Checkout in a WebView, signature verified server-side)
+- Request club-admin access and track request status from your profile
+- Read-only club dashboard for club admins
+
+**Try it:** [Download the Android APK](https://expo.dev/accounts/amisha2220/projects/campusconnect/builds/446d32ca-aa6d-4cb5-b35b-7e9c6195d9ed), or run it with Expo Go:
+
+```bash
+cd mobile
+npm install
+npx expo start   # scan the QR code with Expo Go
+```
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
 | Frontend | React 18, Vite, TypeScript, Tailwind CSS |
+| Mobile | React Native 0.86, Expo SDK 57, Expo Router, TypeScript |
 | Backend | FastAPI, Python 3.11, Pydantic v2 |
 | Database | PostgreSQL 15 (Neon), SQLAlchemy 2.0, Alembic migrations |
 | Auth | JWT (PyJWT) access + refresh tokens with rotation, bcrypt |
@@ -61,7 +92,7 @@ CampusConnect replaces the fragmented WhatsApp groups, Instagram pages, and word
 | Testing | pytest, pytest-cov, real PostgreSQL with per-test transaction rollback |
 | CI/CD | GitHub Actions, Docker, pre-commit (ruff, ESLint) |
 | Observability | Structured JSON logs with request IDs, Sentry, UptimeRobot |
-| Deployment | Vercel (frontend) · Render (backend) · Neon (database) |
+| Deployment | Vercel (frontend) · Render (backend) · Neon (database) · EAS Build (Android APK) |
 
 ---
 
@@ -134,6 +165,12 @@ CampusConnect/
 │       ├── components/              # Reusable UI components
 │       ├── contexts/ · hooks/       # Auth context and hooks
 │       └── lib/                     # API client and utilities
+│
+├── mobile/                          # React Native (Expo) student app
+│   └── src/
+│       ├── app/                     # Expo Router screens (auth, tabs, event, club)
+│       ├── components/              # UI kit, cards, Razorpay WebView
+│       └── lib/                     # API client, auth context, hooks
 │
 ├── backend/                         # FastAPI application
 │   ├── Dockerfile                   # Multi-stage, non-root, healthcheck
@@ -250,6 +287,7 @@ cd backend && python -m app.scripts.make_admin you@muj.manipal.edu
 |---------|----------|--------|
 | Frontend | Vercel | Root: `frontend/` · Build: `npm run build` |
 | Backend | Render | Root: `backend/` · Start: `alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT` · Health check: `/health/ready` |
+| Mobile | EAS Build | Root: `mobile/` · `npx eas-cli build --platform android --profile preview` |
 | Database | Neon | PostgreSQL 15, ap-south-1 |
 | Monitoring | Sentry · UptimeRobot | Errors and uptime alerts |
 
@@ -259,4 +297,4 @@ cd backend && python -m app.scripts.make_admin you@muj.manipal.edu
 
 **Amisha Sharma**  
 B.Tech CSE · Manipal University Jaipur  
-[LinkedIn](https://linkedin.com/in/amisha-sharma-53a5a2270) · [GitHub](https://github.com/amishasharma2220)
+[LinkedIn](https://linkedin.com/in/amishasharma2220) · [GitHub](https://github.com/amishasharma2220)
