@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "CampusConnect",
+    "slug": "campusconnect",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "edu.muj.campusconnect"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FAF8F5",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "edu.muj.campusconnect"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-web-browser"
+    ],
+    "scheme": "campusconnect",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FAF8F5"
+    },
+    "extra": {
+      "apiUrl": "https://campusconnect-api-p6ql.onrender.com/api/v1",
+      "webUrl": "https://campus-connect2-alpha.vercel.app",
+      "router": {},
+      "eas": {
+        "projectId": "7ef2ce9b-9bed-485e-b26d-cd71ac4e7ff0"
+      }
+    },
+    "owner": "amisha2220"
+  }
+}
