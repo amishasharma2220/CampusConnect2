@@ -34,6 +34,16 @@ class Settings(BaseSettings):
     RAZORPAY_KEY_ID: str = ""
     RAZORPAY_KEY_SECRET: str = ""
 
+    # Chat assistant (Google Gemini). Empty key = assistant disabled: the chat
+    # endpoint returns 503 instead of crashing. Set the key on Render only.
+    GEMINI_API_KEY: str = ""
+    # Flash-Lite has the largest free-tier daily quota; switch to a Flash model
+    # here (no code change) if you move to a paid tier.
+    GEMINI_MODEL: str = "gemini-3.5-flash-lite"
+    # Max Gemini API calls per day across all users (one chat message can take
+    # 2-3 calls when the assistant looks things up). Keeps you inside the free tier.
+    CHAT_DAILY_LIMIT: int = 300
+
     # Observability
     LOG_LEVEL: str = "INFO"
     # "json" or "text". Empty = JSON when ENVIRONMENT is production/staging,

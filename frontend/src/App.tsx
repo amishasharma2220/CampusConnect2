@@ -34,6 +34,7 @@ import Leaderboard from "./pages/Leaderboard";
 import EventRegister from "./pages/EventRegister";
 import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
+import { ChatAssistant } from "@/components/chat/ChatAssistant";
 import { Navigate } from "react-router-dom";
 
 
@@ -88,6 +89,7 @@ const App = () => (
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ChatAssistant />
       </BrowserRouter>
     </TooltipProvider>
   </AuthProvider>

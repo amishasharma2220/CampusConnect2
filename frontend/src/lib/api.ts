@@ -70,11 +70,21 @@ async function request<T>(
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(err.detail || "Something went wrong.");
+    throw new Error(formatDetail(err.detail));
   }
 
   if (res.status === 204) return null as T;
   return res.json();
+}
+
+// FastAPI sends validation errors (422) as a list of {msg} objects.
+function formatDetail(detail: unknown): string {
+  if (typeof detail === "string" && detail) return detail;
+  if (Array.isArray(detail) && detail.length) {
+    const msg = (detail[0] as { msg?: unknown })?.msg;
+    if (typeof msg === "string") return msg.replace(/^Value error, /, "");
+  }
+  return "Something went wrong.";
 }
 
 async function tryRefresh(): Promise<boolean> {
@@ -502,4 +512,16 @@ export const clubAdminRequestsApi = {
 
   review: (id: string, data: { status: "approved" | "rejected"; admin_notes?: string }) =>
     request<ClubAdminRequest>(`/admin/club-admin-requests/${id}/review`, { method: "POST", body: JSON.stringify(data) }, true),
+};
+
+// ── Chat assistant ────────────────────────────────────────────
+export interface ChatTurn {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export const chatApi = {
+  // The server only reads the latest turns, so only those are sent.
+  send: (messages: ChatTurn[]) =>
+    request<{ reply: string }>("/chat", { method: "POST", body: JSON.stringify({ messages: messages.slice(-12) }) }, true),
 };
