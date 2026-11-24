@@ -1,0 +1,33 @@
+# CampusConnect FAQ
+
+Edit this file to change what the assistant knows about how CampusConnect works.
+Keep answers short and only include things that are true.
+
+## Accounts
+- Anyone with an @muj.manipal.edu email can sign up at /register. Everyone signs up as a student.
+- Forgot your password: password reset isn't available yet. Use the Contact page (/contact).
+
+## Events
+- Browse all approved events at /events. Open an event to see details and register.
+- Registration is first come, first served until the event's capacity is full.
+- Your registered events are under My Events (/student/my-events) and on your dashboard (/student/dashboard).
+- Certificates for completed events appear under Certificates (/student/certificates) once the club uploads them.
+- Every event is reviewed by a university admin before it appears on the site.
+
+## Clubs
+- All active clubs are listed at /clubs.
+- To join a club, go to Join a Club (/join-club), pick the club and pay the membership fee through Razorpay.
+- The fee is set per club. Your membership is confirmed only after the payment is verified.
+
+## Running a club on CampusConnect
+- Club leaders (President, Vice President, General Secretary and similar) can ask to manage their club:
+  open your student dashboard and use the "Run a club?" card.
+- A university admin reviews the request. If approved, you become the club's admin and get the club dashboard.
+- You can have one pending request at a time, and only for a club that doesn't have an admin yet.
+- Club admins create events from the club dashboard; each event goes to a university admin for approval.
+
+## Other pages
+- Venue finder with campus locations: /venues
+- Academic calendar: /calendar
+- Event guidelines for organisers: /event-guidelines
+- Questions the assistant can't answer: Contact page (/contact)
